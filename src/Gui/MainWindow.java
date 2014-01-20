@@ -22,6 +22,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class MainWindow {
 
@@ -35,9 +37,9 @@ public class MainWindow {
 	 JButton btnPanelAdministratora;
 	 JButton btnProfil;
 	 JLabel lblLogin;
-	 JLabel lblHaso;
+	 JLabel lblHaslo;
 	 JTextField txtLogin;
-	 JPasswordField pwdHaso;
+	 JPasswordField pwdHaslo;
 	 JButton btnZaloguj;
 	 WidokPanel widokPanel;	
 	 
@@ -157,7 +159,7 @@ public class MainWindow {
 			}
 		});
 		btnStronaDomowa.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
-		zakladkiPanel.add(btnStronaDomowa, "2, 1, 3, 5, left, fill");
+		zakladkiPanel.add(btnStronaDomowa, "2, 1, 3, 5, fill, fill");
 		
 		logowaniePanel = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, logowaniePanel, 13, SpringLayout.NORTH, frmHotelSpanie.getContentPane());
@@ -207,16 +209,29 @@ public class MainWindow {
 		logowaniePanel.add(lblLogin, "11, 2, right, default");
 		
 		txtLogin = new JTextField();
+		txtLogin.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtLogin.selectAll();
+				
+			}
+		});
 		txtLogin.setText("Login");
 		logowaniePanel.add(txtLogin, "13, 2, fill, default");
 		txtLogin.setColumns(10);
 		
-		lblHaso = new JLabel("Hasło");
-		logowaniePanel.add(lblHaso, "11, 4, right, default");
+		lblHaslo = new JLabel("Hasło");
+		logowaniePanel.add(lblHaslo, "11, 4, right, default");
 		
-		pwdHaso = new JPasswordField();
-		pwdHaso.setText("Hasło");
-		logowaniePanel.add(pwdHaso, "13, 4, fill, default");
+		pwdHaslo = new JPasswordField();
+		pwdHaslo.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				pwdHaslo.selectAll();
+			}
+		});
+		pwdHaslo.setText("Hasło");
+		logowaniePanel.add(pwdHaslo, "13, 4, fill, default");
 		
 		widokPanel = new WidokPanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, widokPanel, 15, SpringLayout.SOUTH, logowaniePanel);
@@ -239,7 +254,8 @@ public class MainWindow {
 				}
 			}
 		});
-		logowaniePanel.add(btnZaloguj, "13, 6, 1, 3");
+	
+		logowaniePanel.add(btnZaloguj, "13, 5, 1, 4, fill, top");
 		springLayout.putConstraint(SpringLayout.SOUTH, widokPanel, -267, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
 		
 		btnPanelAdministratora = new JButton("Panel administratora");
@@ -256,7 +272,7 @@ public class MainWindow {
 			}
 		});
 		btnPanelAdministratora.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
-		zakladkiPanel.add(btnPanelAdministratora, "10, 1, 1, 5");
+		zakladkiPanel.add(btnPanelAdministratora, "10, 1, 1, 5, fill, fill");
 		springLayout.putConstraint(SpringLayout.WEST, widokPanel, 6, SpringLayout.EAST, zadaniaPanel);
 		springLayout.putConstraint(SpringLayout.EAST, widokPanel, -10, SpringLayout.EAST, frmHotelSpanie.getContentPane());
 		frmHotelSpanie.getContentPane().add(widokPanel);	

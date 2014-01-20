@@ -14,9 +14,9 @@
 	<classpathentry kind="lib" path="/usr/local/eclipse/plugins/com.ibm.icu_50.1.1.v201304230130.jar" sourcepath="/usr/local/eclipse/plugins/com.ibm.icu.source_50.1.1.v201304230130.jar"/>
 	<classpathentry kind="lib" path="/usr/local/eclipse/plugins/org.eclipse.ui.forms_3.6.1.v20130822-1117.jar" sourcepath="/usr/local/eclipse/plugins/org.eclipse.ui.forms.source_3.6.1.v20130822-1117.jar"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/home/adam/workspace/libs/mysql-connector-java-5.1.27-bin.jar"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
 	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="/home/adam/workspace/Spanie/lib/mysql-connector-java-5.1.27-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -29,7 +29,6 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 	 private JButton btnUsunHistorieRezerwacji;
 	 private JButton btnUsunHistoriePobytw;
 	 
-	 
 	/**
 	 * Create the panel.
 	 */
