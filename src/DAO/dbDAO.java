@@ -19,31 +19,59 @@ public class dbDAO {
 	private final static String PASSWORD = "password";
 	
 	private Connection connection;
+	private Statement statement;
+	
+	private String dbName;
+	private String userName;
+	private String password;
+	private String driver;
+	private String url;
 	
 	public dbDAO() {
 		
 		connection = null;
+		readProperties();
 	}
 	
-	private void establishConnection() {
+	
+	private void readProperties() {
 		
 		Properties prop = new Properties();
 		try {
 			prop.load(new FileInputStream(PROPS));
+			
+			driver = prop.getProperty(DRIVER);
+			url = prop.getProperty(URL);
+			dbName = prop.getProperty(DB_NAME);
+			userName = prop.getProperty(USER_NAME);
+			password = prop.getProperty(PASSWORD);
+			
 		} catch(IOException e) {
 			System.err.println("Couldn't read any database properties");
-		}
-			
+		}		
+	}
+	
+	public void establishConnection() {
+		
 		try {
-			Class.forName(prop.getProperty(DRIVER)).newInstance();
-			connection = DriverManager.getConnection(prop.getProperty(URL) + prop.getProperty(DB_NAME)
-					, prop.getProperty(USER_NAME), prop.getProperty(PASSWORD));
+			Class.forName(driver).newInstance();
+			connection = DriverManager.getConnection(url + dbName, userName, password);
 			System.out.println("Connected to a database");
 		} catch (Exception e) {
 			System.err.println("No connection");
 		}
 	}
-	private void closeConnection() {
+	
+	
+	public void closeConnection() {
+		
+		if(statement != null)
+			try {
+				statement.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		
 		if(connection != null) {
 			
@@ -56,42 +84,25 @@ public class dbDAO {
 		}
 	}
 	
-	
 	public ResultSet executeQuery(String query) {
 		
-		establishConnection();
-		
-		
 		ResultSet rs = null;
-		try(Statement stmt = connection.createStatement()) {
-		rs = stmt.executeQuery(query);
-		} catch(SQLException e) {
-			
-			System.err.println("Couldn't execute the following query:" + query);
-		}
+		try {
+			statement = connection.createStatement();
+			rs = statement.executeQuery(query);
 		
-		closeConnection();
-		return rs;
-	}
-	
-	public static void main(String[] args) {
-		dbDAO dao = new dbDAO();
-		dao.establishConnection();
-		
-		
-		ResultSet rs = null;
-		try(Statement stmt = dao.connection.createStatement()) {
-		rs = stmt.executeQuery("SELECT title, author FROM classics");
-		while(rs.next()) {
-			System.out.println("Title: " + rs.getString(1) + ", Author: " + rs.getString(2));
-		}
 		} catch(SQLException e) {
 			
 			System.err.println("Couldn't execute a statement");
+			if(statement != null)
+				try {
+					statement.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		}
 		
-		dao.closeConnection();
-		
-		
+		return rs;
 	}
 }
