@@ -27,10 +27,24 @@ public class dbDAO {
 	private String driver;
 	private String url;
 	
+	private static final String QUERIES = "resources//query.properties";
+	private static final String reportA = "report1";
+	private static final String reportB = "report2";
+	private static final String reportC = "report3";
+	private static final String reportD = "report4";
+	
+	private dbDAO db;
+	
+	public String query1;
+	public String query2;
+	public String query3;
+	public String query4;
+	
 	public dbDAO() {
 		
 		connection = null;
 		readProperties();
+		readQueries();
 	}
 	
 	
@@ -45,6 +59,20 @@ public class dbDAO {
 			dbName = prop.getProperty(DB_NAME);
 			userName = prop.getProperty(USER_NAME);
 			password = prop.getProperty(PASSWORD);
+			
+		} catch(IOException e) {
+			System.err.println("Couldn't read any database properties");
+		}		
+	}
+	
+	private void readQueries() {
+		
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(QUERIES));
+			
+			query1 = prop.getProperty(reportA);
+			query2 = prop.getProperty(reportB);
 			
 		} catch(IOException e) {
 			System.err.println("Couldn't read any database properties");
@@ -90,7 +118,7 @@ public class dbDAO {
 		try {
 			statement = connection.createStatement();
 			rs = statement.executeQuery(query);
-		
+			
 		} catch(SQLException e) {
 			
 			System.err.println("Couldn't execute a statement");

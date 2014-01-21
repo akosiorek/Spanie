@@ -235,6 +235,7 @@ public class MainWindow {
 		
 		widokPanel = new WidokPanel(this);
 		springLayout.putConstraint(SpringLayout.NORTH, widokPanel, 15, SpringLayout.SOUTH, logowaniePanel);
+		springLayout.putConstraint(SpringLayout.SOUTH, widokPanel, -105, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
 		
 		btnZaloguj = new JButton("Zaloguj");
 		btnZaloguj.addActionListener(new ActionListener() {
@@ -256,7 +257,6 @@ public class MainWindow {
 		});
 	
 		logowaniePanel.add(btnZaloguj, "13, 5, 1, 4, fill, top");
-		springLayout.putConstraint(SpringLayout.SOUTH, widokPanel, -267, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
 		
 		btnPanelAdministratora = new JButton("Panel administratora");
 		btnPanelAdministratora.addActionListener(new ActionListener() {
