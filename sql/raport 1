@@ -1,41 +1,36 @@
-LISTA POKOJE POBYT /// powinny mieć tag pobyt/{zajete}, parametry od użytkownika DATA_R,DATA_Z
-select POBYT_POKOJE.nr_pobytu,POBYT_POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30';
-
-ILOSC POKOJE POBYT 
+#ILOSC POKOJE POBYT 
 select count(*) POBYT_POKOJE.nr_pobytu,POBYT_POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < 'DATA' and POBYT.data_zakonczenia >= 'DATA';
 
-ILOSC POKOI POBYT DANEGO TYPU
-select count(*) POBYT_POKOJE.nr_pobytu,POBYT_POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < 'DATA' and POBYT.data_zakonczenia >= 'DATA' order by POKOJE.rodzaj_pokoju ;
+#ILOSC POKOJE REZERWACJA 
+#select count(*) from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < 'DATA_R' and REZERWACJA.data_zakonczenia >= 'DATA_Z';
 
-
-LISTA POKOJE REZERWACJA 
-select REZERWACJA_POKOJE.nr_rezerwacji,REZERWACJA_POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30';
-
-ILOSC POKOJE REZERWACJA 
-select count(*) from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < 'DATA_R' and REZERWACJA.data_zakonczenia >= 'DATA_Z';
-
-ILOSC POKOI REZERWACJA DANEGO TYPU 
-select  POKOJE.rodzaj_pokoju,count(*) from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < 'DATA_R' and REZERWACJA.data_zakonczenia >= 'DATA_Z'group by POKOJE.rodzaj_pokoju;
+#ILOSC POKOI WOLNE
+#select count(*) from POKOJE where POKOJE.nr_pokoju not in(select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30');
 
 
 
-LISTA POKOJE WOLNE 
-select POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju from POKOJE where POKOJE.nr_pokoju not in(select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30');
 
-ILOSC POKOI WOLNE
-select count(*) from POKOJE where POKOJE.nr_pokoju not in(select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30');
 
-ILOSC POKOI WOLNE DANEGO TYPU
-select POKOJE.rodzaj_pokoju, count(*) from POKOJE where POKOJE.nr_pokoju not in(select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30') group by POKOJE.rodzaj_pokoju;
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-DODATKOWE OPCJE:
-* ZMIANA KOLEJNOŚCI SORTOWANIA poprzez klik użytkownika dodanie/modyfikacja order by ASC|DESC;
 
-* W LISTA REZERWACJE/POBYT dodatkowe pola:
-	  
-	LISTA POKOJE REZERWACJA 
-select REZERWACJA_POKOJE.nr_rezerwacji,REZERWACJA_POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju,REZERWACJA.data_rozpoczecia,REZERWACJA.data_zakonczenia from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30';
 
-	LISTA POKOJE POBYT
-select POBYT_POKOJE.nr_pobytu,POBYT_POKOJE.nr_pokoju,POKOJE.rodzaj_pokoju,POBYT.data_rozpoczecia,POBYT.data_zakonczenia from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30';
+
+
+
+
+
+
+
+
+
+
+
+
+#ILOSC POKOI POBYT DANEGO TYPU
+#select count(*), POKOJE.rodzaj_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30' order by POKOJE.rodzaj_pokoju ;
+
+#ILOSC POKOI REZERWACJA DANEGO TYPU 
+#select  count(*), POKOJE.rodzaj_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30'group by POKOJE.rodzaj_pokoju;
+
+#ILOSC POKOI WOLNE DANEGO TYPU
+#select count(*), POKOJE.rodzaj_pokoju, from POKOJE where POKOJE.nr_pokoju not in (select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30') group by POKOJE.rodzaj_pokoju;

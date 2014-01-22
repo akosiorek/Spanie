@@ -1,4 +1,4 @@
-package Gui;
+package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +9,8 @@ import javax.swing.SpringLayout;
 
 public class ZadniaPanel extends CardPanel<MainWindow> {
 
-	final String ZWYKLE = "ZWYKLE";
-	final String ADMIN = "ADMIN";
+	public final static String ZWYKLE = "ZWYKLE";
+	public final static String RAPORT = "RAPORT";
 	
 	private JPanel zwyklePanel;
 	private JPanel adminPanel;
@@ -21,13 +21,9 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 	 JButton btnIstniejcaRezerwacja;
 	 JButton btnAktualizujCennik;
 	 JButton btnSezony;
-	 private JButton btnUytkownicy;
-	 private JButton btnUprawnienia;
-	 private JButton btnUslugiDodatkowe;
-	 private JButton btnPokoje;
-	 private JButton btnRaporty;
-	 private JButton btnUsunHistorieRezerwacji;
-	 private JButton btnUsunHistoriePobytw;
+	 private JButton btnRaport1;
+	 private JButton btnRaport2;
+	 private JButton btnRaport3;
 	 
 	/**
 	 * Create the panel.
@@ -39,7 +35,7 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		zrobAdminPanel();
 		
 		add(zwyklePanel, ZWYKLE);
-		add(adminPanel, ADMIN);
+		add(adminPanel, RAPORT);
 		
 	    wyswietl(ZWYKLE);	
 	}
@@ -142,74 +138,56 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		SpringLayout sl_adminPanel = new SpringLayout();
 		adminPanel.setLayout(sl_adminPanel);
 		
-		btnUytkownicy = new JButton("Użytkownicy");
-		btnUytkownicy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnUytkownicy, 10, SpringLayout.NORTH, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnUytkownicy, 10, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.EAST, btnUytkownicy, 177, SpringLayout.WEST, adminPanel);
-		adminPanel.add(btnUytkownicy);
+		btnRaport1 = new JButton("Raport 1");
+		btnRaport2 = new JButton("Raport 2");
+		btnRaport3 = new JButton("Raport 3");
 		
-		btnUprawnienia = new JButton("Uprawnienia");
-		btnUprawnienia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnUprawnienia, 13, SpringLayout.SOUTH, btnUytkownicy);
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnUprawnienia, 10, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.EAST, btnUprawnienia, 177, SpringLayout.WEST, adminPanel);
-		adminPanel.add(btnUprawnienia);
 		
-		btnUslugiDodatkowe = new JButton("Usługi dodatkowe");
-		btnUslugiDodatkowe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnUslugiDodatkowe, 10, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.EAST, btnUslugiDodatkowe, 177, SpringLayout.WEST, adminPanel);
-		adminPanel.add(btnUslugiDodatkowe);
+		//	btnUzytkownicy
+		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnRaport1, 15, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.WEST, btnRaport1, 12, SpringLayout.WEST, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.SOUTH, btnRaport1, 60, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.EAST, btnRaport1, 214, SpringLayout.WEST, adminPanel);		
 		
-		btnPokoje = new JButton("Pokoje");
-		btnPokoje.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnPokoje, 13, SpringLayout.SOUTH, btnUprawnienia);
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnPokoje, 10, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.EAST, btnPokoje, 177, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnUslugiDodatkowe, 13, SpringLayout.SOUTH, btnPokoje);
-		adminPanel.add(btnPokoje);
+		// btnUprawnienia
+		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnRaport2, 75, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.WEST, btnRaport2, 12, SpringLayout.WEST, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.SOUTH, btnRaport2, 120, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.EAST, btnRaport2, 214, SpringLayout.WEST, adminPanel);
 		
-		btnRaporty = new JButton("Raporty");
-		btnRaporty.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnRaporty, 13, SpringLayout.SOUTH, btnUslugiDodatkowe);
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnRaporty, 10, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.EAST, btnRaporty, 177, SpringLayout.WEST, adminPanel);
-		adminPanel.add(btnRaporty);
-		
-		btnUsunHistorieRezerwacji = new JButton("Usun historie rezerwacji");
-		btnUsunHistorieRezerwacji.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnUsunHistorieRezerwacji, 13, SpringLayout.SOUTH, btnRaporty);
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnUsunHistorieRezerwacji, 10, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.EAST, btnUsunHistorieRezerwacji, 177, SpringLayout.WEST, adminPanel);
-		adminPanel.add(btnUsunHistorieRezerwacji);
-		
-		btnUsunHistoriePobytw = new JButton("Usun historie pobytów");
-		btnUsunHistoriePobytw.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnUsunHistoriePobytw, 13, SpringLayout.SOUTH, btnUsunHistorieRezerwacji);
-		sl_adminPanel.putConstraint(SpringLayout.WEST, btnUsunHistoriePobytw, 10, SpringLayout.WEST, adminPanel);
-		adminPanel.add(btnUsunHistoriePobytw);
-	}
 
+		
+		//	btnUzytkownicy
+		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnRaport3, 135, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.WEST, btnRaport3, 12, SpringLayout.WEST, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.SOUTH, btnRaport3, 179, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.EAST, btnRaport3, 214, SpringLayout.WEST, adminPanel);
+
+	
+		
+		
+		
+		btnRaport1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				parent.widokPanel.wyswietl(WidokPanel.RAPORT1);
+			}
+		});
+		
+		btnRaport2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		
+			}
+		});
+		
+		btnRaport3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			}
+		});
+		
+		adminPanel.add(btnRaport1);
+		adminPanel.add(btnRaport2);
+		adminPanel.add(btnRaport3);
+	}
 }

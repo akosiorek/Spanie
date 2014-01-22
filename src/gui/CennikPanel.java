@@ -1,4 +1,4 @@
-package Gui;
+package gui;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;

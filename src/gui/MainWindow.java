@@ -1,10 +1,11 @@
-package Gui;
+package gui;
 
-import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,8 +23,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class MainWindow {
 
@@ -34,7 +33,7 @@ public class MainWindow {
 	 JPanel zakladkiPanel;
 	 JPanel logowaniePanel;
 	 JButton btnStronaDomowa;
-	 JButton btnPanelAdministratora;
+	 JButton btnRaporty;
 	 JButton btnProfil;
 	 JLabel lblLogin;
 	 JLabel lblHaslo;
@@ -48,8 +47,6 @@ public class MainWindow {
 	 
 	 private final String adminErrorMsg = "Brak uprawnień administratora.";
 	 private final String niezalogowanyErrorMsg = "Brak dostępu.\n Proszę się zalogować.";
-	 
-	 private SpringLayout springLayout;
 	
 	private static void setNimbusLookAndFeel() {
 		
@@ -104,8 +101,6 @@ public class MainWindow {
 		frmHotelSpanie.setTitle("Hotel Spanie");
 		frmHotelSpanie.setBounds(100, 100, 1066, 882);
 		frmHotelSpanie.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		springLayout = new SpringLayout();
-		frmHotelSpanie.getContentPane().setLayout(springLayout);
 	}
 	
 
@@ -114,58 +109,34 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		zrobHotelSpanie();
+		frmHotelSpanie.getContentPane().setLayout(null);
 		
 		zadaniaPanel = new ZadniaPanel(this);
-		springLayout.putConstraint(SpringLayout.WEST, zadaniaPanel, 10, SpringLayout.WEST, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, zadaniaPanel, -328, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, zadaniaPanel, 260, SpringLayout.WEST, frmHotelSpanie.getContentPane());
+		zadaniaPanel.setBounds(10, 180, 250, 349);
 		zadaniaPanel.setBorder(BorderFactory.createTitledBorder("Zadania"));
 		
 		
 		frmHotelSpanie.getContentPane().add(zadaniaPanel);
 		
 		zakladkiPanel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, zadaniaPanel, 31, SpringLayout.SOUTH, zakladkiPanel);
-		springLayout.putConstraint(SpringLayout.NORTH, zakladkiPanel, 13, SpringLayout.NORTH, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, zakladkiPanel, -708, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, zakladkiPanel, -587, SpringLayout.EAST, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, zakladkiPanel, 41, SpringLayout.WEST, frmHotelSpanie.getContentPane());
+		zakladkiPanel.setBounds(41, 13, 370, 136);
 		zakladkiPanel.setBorder(BorderFactory.createTitledBorder("Zakładki"));
 		frmHotelSpanie.getContentPane().add(zakladkiPanel);
-		zakladkiPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("126px"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,},
-			new RowSpec[] {
-				RowSpec.decode("33px"),
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		btnStronaDomowa = new JButton("Strona domowa");
+		btnStronaDomowa.setBounds(21, 27, 152, 90);
 		btnStronaDomowa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				zadaniaPanel.wyswietl(zadaniaPanel.ZWYKLE);
 			}
 		});
+		zakladkiPanel.setLayout(null);
 		btnStronaDomowa.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
-		zakladkiPanel.add(btnStronaDomowa, "2, 1, 3, 5, fill, fill");
+		zakladkiPanel.add(btnStronaDomowa);
 		
 		logowaniePanel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, logowaniePanel, 13, SpringLayout.NORTH, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.WEST, logowaniePanel, 197, SpringLayout.EAST, zakladkiPanel);
-		springLayout.putConstraint(SpringLayout.SOUTH, logowaniePanel, -692, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, logowaniePanel, -10, SpringLayout.EAST, frmHotelSpanie.getContentPane());
+		logowaniePanel.setBounds(668, 13, 380, 152);
 		logowaniePanel.setBorder(BorderFactory.createTitledBorder("Panel logowania"));
 		frmHotelSpanie.getContentPane().add(logowaniePanel);
 		logowaniePanel.setLayout(new FormLayout(new ColumnSpec[] {
@@ -234,8 +205,7 @@ public class MainWindow {
 		logowaniePanel.add(pwdHaslo, "13, 4, fill, default");
 		
 		widokPanel = new WidokPanel(this);
-		springLayout.putConstraint(SpringLayout.NORTH, widokPanel, 15, SpringLayout.SOUTH, logowaniePanel);
-		springLayout.putConstraint(SpringLayout.SOUTH, widokPanel, -105, SpringLayout.SOUTH, frmHotelSpanie.getContentPane());
+		widokPanel.setBounds(266, 180, 782, 572);
 		
 		btnZaloguj = new JButton("Zaloguj");
 		btnZaloguj.addActionListener(new ActionListener() {
@@ -258,23 +228,22 @@ public class MainWindow {
 	
 		logowaniePanel.add(btnZaloguj, "13, 5, 1, 4, fill, top");
 		
-		btnPanelAdministratora = new JButton("Panel administratora");
-		btnPanelAdministratora.addActionListener(new ActionListener() {
+		btnRaporty = new JButton("Raporty");
+		btnRaporty.setBounds(185, 27, 152, 90);
+		btnRaporty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(sprawdzLogowanie()) {
 					if(!admin) {
 						JOptionPane.showMessageDialog(new JFrame(), adminErrorMsg, "Brak uprawnień!",
 						        JOptionPane.ERROR_MESSAGE);
 					} else {
-						zadaniaPanel.wyswietl(zadaniaPanel.ADMIN);	
+						zadaniaPanel.wyswietl(zadaniaPanel.RAPORT);	
 					}
 				}
 			}
 		});
-		btnPanelAdministratora.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
-		zakladkiPanel.add(btnPanelAdministratora, "10, 1, 1, 5, fill, fill");
-		springLayout.putConstraint(SpringLayout.WEST, widokPanel, 6, SpringLayout.EAST, zadaniaPanel);
-		springLayout.putConstraint(SpringLayout.EAST, widokPanel, -10, SpringLayout.EAST, frmHotelSpanie.getContentPane());
+		btnRaporty.setFont(new Font("DejaVu Sans", Font.BOLD, 14));
+		zakladkiPanel.add(btnRaporty);
 		frmHotelSpanie.getContentPane().add(widokPanel);	
 	}
 	

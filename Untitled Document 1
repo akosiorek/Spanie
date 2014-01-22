@@ -1,0 +1,20 @@
+zajete
+
+select count(C.rodzaj_pokoju) as 'zajete pokoje', C.rodzaj_pokoju from (select rodzaj_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30' order by POKOJE.rodzaj_pokoju) C;
+
+
+rezerwacja
+
+select count(B.rodzaj_pokoju) as 'zarezerwowane pokoje', B.rodzaj_pokoju from (select rodzaj_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30'group by POKOJE.rodzaj_pokoju) B;
+
+
+
+wolne
+
+select count(A.rodzaj_pokoju) as 'wolne_pokoje', A.rodzaj_pokoju from (select *, POKOJE.rodzaj_pokoju as rodzaj_pokoju from POKOJE where POKOJE.nr_pokoju not in (select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30') group by POKOJE.rodzaj_pokoju) A;
+
+
+
+
+
+select count(A.rodzaj_pokoju) as 'wolne_pokoje', A.rodzaj_pokoju, count(B.rodzaj_pokoju) as 'zarezerwowane pokoje', B.rodzaj_pokoju, count(C.rodzaj_pokoju) as 'zajete pokoje', C.rodzaj_pokoju from ((select POKOJE.rodzaj_pokoju as rodzaj_pokoju from POKOJE where POKOJE.nr_pokoju not in (select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30') group by POKOJE.rodzaj_pokoju) A left join (select rodzaj_pokoju from POKOJE, REZERWACJA_POKOJE left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '2014-01-30' and REZERWACJA.data_zakonczenia >= '2014-01-30'group by POKOJE.rodzaj_pokoju) B on A.rodzaj_pokoju = B.rodzaj_pokoju join (select rodzaj_pokoju from POKOJE,POBYT_POKOJE left join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '2014-01-30' and POBYT.data_zakonczenia >= '2014-01-30' order by POKOJE.rodzaj_pokoju) C);
