@@ -1,11 +1,11 @@
 
 DANE filtracja nazwa usługi 
 
-select POBYT_USLUGA_DODATKOWA.nazwa_uslugi,POBYT_USLUGA_DODATKOWA.cena, POBYT.nr_pobytu, Klient.nazwisko, count(*) from POBYT_USLUGA_DODATKOWA left join POBYT on POBYT_USLUGA_DODATKOWA.nr_pobytu=POBYT.nr_pobytu join Klient on POBYT.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta where POBYT_USLUGA_DODATKOWA.nazwa_uslugi='obiad' and POBYT_USLUGA_DODATKOWA.data_rozpoczecia<='2014-01-20' and POBYT_USLUGA_DODATKOWA.data_zakonczenia>='2014-01-20' group by POBYT_USLUGA_DODATKOWA.nazwa_uslugi,POBYT.nr_pobytu,POBYT_USLUGA_DODATKOWA.cena;
+select POBYT_USLUGA_DODATKOWA.nazwa_uslugi, POBYT.nr_pobytu, Klient.nazwisko, count(*) as 'ilość_usługi' from POBYT_USLUGA_DODATKOWA left join POBYT on POBYT_USLUGA_DODATKOWA.nr_pobytu=POBYT.nr_pobytu join Klient on POBYT.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta where POBYT_USLUGA_DODATKOWA.nazwa_uslugi='obiad' and POBYT_USLUGA_DODATKOWA.data_rozpoczecia<='2014-01-20' and POBYT_USLUGA_DODATKOWA.data_zakonczenia>='2014-01-20' group by POBYT_USLUGA_DODATKOWA.nazwa_uslugi,POBYT.nr_pobytu;
 
 DANE filtracja nazwisko:
 
-select POBYT_USLUGA_DODATKOWA.nazwa_uslugi,POBYT_USLUGA_DODATKOWA.cena, POBYT.nr_pobytu, Klient.nazwisko, count(*) from POBYT_USLUGA_DODATKOWA left join POBYT on POBYT_USLUGA_DODATKOWA.nr_pobytu=POBYT.nr_pobytu join Klient on POBYT.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta where Klient.nazwisko='Koziolek' and POBYT_USLUGA_DODATKOWA.data_rozpoczecia<='2014-01-20' and POBYT_USLUGA_DODATKOWA.data_zakonczenia>='2014-01-20' group by POBYT_USLUGA_DODATKOWA.nazwa_uslugi,POBYT.nr_pobytu,POBYT_USLUGA_DODATKOWA.cena;
+select POBYT_USLUGA_DODATKOWA.nazwa_uslugi, POBYT.nr_pobytu, Klient.nazwisko, count(*) as 'ilość_usługi' from POBYT_USLUGA_DODATKOWA left join POBYT on POBYT_USLUGA_DODATKOWA.nr_pobytu=POBYT.nr_pobytu join Klient on POBYT.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta where Klient.nazwisko='Koziolek' and POBYT_USLUGA_DODATKOWA.data_rozpoczecia<='2014-01-20' and POBYT_USLUGA_DODATKOWA.data_zakonczenia>='2014-01-20' group by POBYT_USLUGA_DODATKOWA.nazwa_uslugi,POBYT.nr_pobytu;
 
 OPCJA DODATKOWA wszystkie usługi bez filtracji po kliencie
 

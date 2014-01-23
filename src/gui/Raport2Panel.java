@@ -19,14 +19,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import raporty.ListaPokoiTypQuery;
-import raporty.NumPokojeRezerwQuery;
-import raporty.NumPokojeWolneQuery;
-import raporty.NumPokojeZajeteQuery;
+import raporty.*;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 
 import dao.dbDAO;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Raport2Panel extends JPanel {
 	
@@ -56,12 +55,11 @@ public class Raport2Panel extends JPanel {
 	
 	private WidokPanel parent;
 	private boolean szczegoly = false;
-	private ListaPokoiTypQuery listaPokoiTypQuery  = new ListaPokoiTypQuery();;
+	private UslugiKlientQuery uslugiKlientQuery = new UslugiKlientQuery();
+	private UslugiNazwaQuery uslugiNazwaQuery = new UslugiNazwaQuery();
 	
 	
-	private NumPokojeWolneQuery numPokojeWolneQuery = new NumPokojeWolneQuery();
-	private NumPokojeRezerwQuery numPokojeRezerwQuery =  new NumPokojeRezerwQuery();
-	private NumPokojeZajeteQuery numPokojeZajeteQuery =  new NumPokojeZajeteQuery();
+	private JComboBox<String> cbFiltr;
 	
 	/**
 	 * Create the panel.
@@ -91,7 +89,7 @@ public class Raport2Panel extends JPanel {
 		
 		lowerTable = new JTable();		
 		lowerTableScrollPane = new JScrollPane(lowerTable);
-		lowerTableScrollPane.setBounds(48, 324, 363, 171);
+		lowerTableScrollPane.setBounds(118, 324, 0, 171);
 		lowerTable.setAutoResizeMode(JTable.WIDTH);
 		add(lowerTableScrollPane);
 		
@@ -114,71 +112,87 @@ public class Raport2Panel extends JPanel {
 		
 		
 		btnWyszukaj = new JButton("Wyszukaj");
-		btnWyszukaj.setBounds(435, 27, 102, 25);
+		btnWyszukaj.setBounds(572, 27, 102, 25);
 		add(btnWyszukaj);
-		btnWyszukaj.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent evt) {
-				
-				Date dataOd = datePickerOd.getDate();
-				Date dataDo = datePickerDo.getDate();
-				showResultUpper(dataOd, dataDo);
-			}
-		});
 		
-		upperTableHeader = upperTable.getTableHeader();
-		upperTableHeader.setReorderingAllowed(false);
-
-		lowerTableHeader = lowerTable.getTableHeader();
-		lowerTableHeader.setReorderingAllowed(false);
-		lowerTableHeader.addMouseListener(new MouseAdapter() {
-		      @Override
-		      public void mouseClicked(MouseEvent mouseEvent) {
-		        int index = lowerTable.convertColumnIndexToModel(lowerTable.columnAtPoint(mouseEvent.getPoint()));
-		        if (index >= 0) {
-		        	
-		        	String sortedBy = listaPokoiTypQuery.getSort();
-		        	String newSort = null;
-		        		        
-			        switch(index) {	        
-			   
-			        case 0: newSort = ListaPokoiTypQuery.NR_POKOJU; break;
-			        case 1: newSort = ListaPokoiTypQuery.STAN_POKOJU; break;
-			        case 2: newSort = ListaPokoiTypQuery.TYP_POKOJU; break;
-			        case 3: newSort = ListaPokoiTypQuery.DATA_ROZP; break;
-			        case 4: newSort = ListaPokoiTypQuery.DATA_ZAK; break;
-			        }		       
-			        
-			        if(listaPokoiTypQuery.isSortedBy(newSort))
-			        	listaPokoiTypQuery.setSort(newSort, !listaPokoiTypQuery.getSortOrder());
-			        else
-			        	listaPokoiTypQuery.setSort(newSort);
-			        
-			        if(szczegoly) showResultLower(listaPokoiTypQuery.toStringSzczegol());
-			        else showResultLower(listaPokoiTypQuery.toString());
-		        }
-		      }
-		});		
+		cbFiltr = new JComboBox<String>();
+		cbFiltr.setModel(new DefaultComboBoxModel<String>(new String[] {"nazwa usługi", "nazwisko klienta"}));
+		cbFiltr.setBounds(423, 27, 138, 25);
+		add(cbFiltr);
 		
-		showResultUpper();
-		showResultLower(listaPokoiTypQuery.toString());
 		
-		btnSzczegoly.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				szczegoly = !szczegoly;
-				listaPokoiTypQuery.setSort(ListaPokoiTypQuery.NR_POKOJU);
-				if(!szczegoly) {
-					lowerTableScrollPane.setBounds(48, 324, 363, 171);
-					showResultLower(listaPokoiTypQuery.toString());
-				} else {
-					lowerTableScrollPane.setBounds(48, 324, 589, 171);
-					showResultLower(listaPokoiTypQuery.toStringSzczegol());
-				}	
-				
-			}
-		});
+//		btnWyszukaj.addActionListener(new ActionListener() {
+//			
+//			public void actionPerformed(ActionEvent evt) {
+//				
+//				Date dataOd = datePickerOd.getDate();
+//				Date dataDo = datePickerDo.getDate();
+//				
+//				
+//				String query;
+//				switch(cbFiltr.getSelectedIndex()) {
+//				case 0:	; break;
+//				case 1: ; break;
+//				
+//				}
+//				
+//				showResultUpper(dataOd, dataDo);
+//			}
+//		});
+//		
+//		upperTableHeader = upperTable.getTableHeader();
+//		upperTableHeader.setReorderingAllowed(false);
+//
+//		lowerTableHeader = lowerTable.getTableHeader();
+//		lowerTableHeader.setReorderingAllowed(false);
+//		lowerTableHeader.addMouseListener(new MouseAdapter() {
+//		      @Override
+//		      public void mouseClicked(MouseEvent mouseEvent) {
+//		        int index = lowerTable.convertColumnIndexToModel(lowerTable.columnAtPoint(mouseEvent.getPoint()));
+//		        if (index >= 0) {
+//		        	
+//		        	String sortedBy = listaPokoiTypQuery.getSort();
+//		        	String newSort = null;
+//		        		        
+//			        switch(index) {	        
+//			   
+//			        case 0: newSort = ListaPokoiTypQuery.NR_POKOJU; break;
+//			        case 1: newSort = ListaPokoiTypQuery.STAN_POKOJU; break;
+//			        case 2: newSort = ListaPokoiTypQuery.TYP_POKOJU; break;
+//			        case 3: newSort = ListaPokoiTypQuery.DATA_ROZP; break;
+//			        case 4: newSort = ListaPokoiTypQuery.DATA_ZAK; break;
+//			        }		       
+//			        
+//			        if(listaPokoiTypQuery.isSortedBy(newSort))
+//			        	listaPokoiTypQuery.setSort(newSort, !listaPokoiTypQuery.getSortOrder());
+//			        else
+//			        	listaPokoiTypQuery.setSort(newSort);
+//			        
+//			        if(szczegoly) showResultLower(listaPokoiTypQuery.toStringSzczegol());
+//			        else showResultLower(listaPokoiTypQuery.toString());
+//		        }
+//		      }
+//		});		
+//		
+//		showResultUpper();
+//		showResultLower(listaPokoiTypQuery.toString());
+//		
+//		btnSzczegoly.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//				szczegoly = !szczegoly;
+//				listaPokoiTypQuery.setSort(ListaPokoiTypQuery.NR_POKOJU);
+//				if(!szczegoly) {
+//					lowerTableScrollPane.setBounds(118, 324, 0, 171);
+//					showResultLower(listaPokoiTypQuery.toString());
+//				} else {
+//					lowerTableScrollPane.setBounds(118, 324, 450, 171);
+//					showResultLower(listaPokoiTypQuery.toStringSzczegol());
+//				}	
+//				
+//			}
+//		});
 	}
 	
 	public void setUpperData(Object[][] data) {
@@ -209,35 +223,9 @@ public class Raport2Panel extends JPanel {
 		db.closeConnection();
 	}
 	
-	public void showResultUpper() {
-	dbDAO db = new dbDAO();
+public void showResultUpper(String query) {
 		
-		db.establishConnection();
-		
-		ResultSet rs1 = db.executeQuery(numPokojeWolneQuery.toString());
-		ResultSet rs2 = db.executeQuery(numPokojeRezerwQuery.toString());
-		ResultSet rs3 = db.executeQuery(numPokojeZajeteQuery.toString());
-		
-		try {
-			upperTable.setModel(new ResultSetNumPokoje(rs1, rs2, rs3));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		db.closeConnection();
-	}
-	
-	public void showResultUpper(Date dataOd, Date dataDo) {
-		
-		numPokojeWolneQuery.setDataOd(dataOd);
-		numPokojeWolneQuery.setDataDo(dataDo);
-		numPokojeRezerwQuery.setDataOd(dataOd);
-		numPokojeRezerwQuery.setDataDo(dataDo);
-		numPokojeZajeteQuery.setDataOd(dataOd);
-		numPokojeZajeteQuery.setDataDo(dataDo);
-		
-		showResultUpper();
+		showResult(query, upperTable);
 	}
 	
 	public void showResultLower(String query) {
