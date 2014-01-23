@@ -28,7 +28,7 @@ import com.michaelbaranov.microba.calendar.DatePicker;
 
 import dao.dbDAO;
 
-public class Raport1Panel extends JPanel {
+public class Raport2Panel extends JPanel {
 	
 	protected JButton btnZapisz;
 	protected JButton btnDrukuj;
@@ -66,7 +66,7 @@ public class Raport1Panel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Raport1Panel(WidokPanel _parent) {
+	public Raport2Panel(WidokPanel _parent) {
 		this.parent = _parent;
 		setLayout(null);
 		

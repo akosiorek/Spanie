@@ -7,5 +7,8 @@
 	<classpathentry kind="lib" path="/home/adam/workspace/Spanie/miglayout15-swing.jar"/>
 	<classpathentry kind="lib" path="/home/adam/workspace/Spanie/miglayout-src.zip"/>
 	<classpathentry kind="lib" path="/home/adam/workspace/Spanie/swing2swt.jar"/>
+	<classpathentry kind="lib" path="/media/D/workspace/Spanie/lib/microba-0.4.4.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/media/D/workspace/Spanie/lib/microba-0.4.4.3.jar"/>
+	<classpathentry kind="lib" path="/media/D/workspace/Spanie/lib/microba-0.4.4.3-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

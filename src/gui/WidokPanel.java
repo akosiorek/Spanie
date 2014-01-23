@@ -38,11 +38,11 @@ public class WidokPanel extends CardPanel<MainWindow> {
 		
 		//	Raporty
 		raport1Panel = new Raport1Panel(this);
-//		raport2Panel = new Raport2Panel(this);
-//		raport3Panel = new Raport3Panel(this);
+		raport2Panel = new Raport2Panel(this);
+		raport3Panel = new Raport3Panel(this);
 		add(raport1Panel, RAPORT1);
-//		add(raport2Panel, RAPORT2);
-//		add(raport3Panel, RAPORT3);
+		add(raport2Panel, RAPORT2);
+		add(raport3Panel, RAPORT3);
 		
 		
 		wyswietl(EMPTY);

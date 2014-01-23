@@ -221,6 +221,7 @@ public class MainWindow {
 					zalogowany = false;
 					admin = false;
 					zadaniaPanel.wyswietl(zadaniaPanel.ZWYKLE);
+					widokPanel.wyswietl(widokPanel.EMPTY);
 					
 				}
 			}

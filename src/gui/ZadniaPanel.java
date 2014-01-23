@@ -168,21 +168,20 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		
 		
 		btnRaport1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+			public void actionPerformed(ActionEvent arg0) {				
 				parent.widokPanel.wyswietl(WidokPanel.RAPORT1);
 			}
 		});
 		
 		btnRaport2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-		
+				parent.widokPanel.wyswietl(WidokPanel.RAPORT2);
 			}
 		});
 		
 		btnRaport3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				parent.widokPanel.wyswietl(WidokPanel.RAPORT3);
 			}
 		});
 		
