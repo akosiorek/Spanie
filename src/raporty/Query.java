@@ -15,7 +15,6 @@ public abstract class Query {
 	
 	public Query() {
 		
-		setSort(null);
 		parts = new ArrayList<String>();		
 		load();		
 	}

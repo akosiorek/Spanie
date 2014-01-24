@@ -7,6 +7,8 @@ public class ListaPokoiTypQuery extends Query {
 	private java.sql.Date dataOd;
 	private java.sql.Date dataDo;
 	
+	private boolean szczegol;
+	
 	public static final String NR_POKOJU = "nr_pokoju";
 	public static final String STAN_POKOJU = "stan_pokoju";
 	public static final String TYP_POKOJU = "rodzaj_pokoju";
@@ -21,24 +23,26 @@ public class ListaPokoiTypQuery extends Query {
 		
 		dataDo = new Date(0, 0, 0);
 		dataOd = new Date(1000, 0, 0);
+		szczegol = false;
+		setSort(NR_POKOJU);
 	}
 	
 	@Override
 	public String toString() {
-		return parts.get(0) + parts.get(1) + dataOd.toString() + parts.get(2) + dataDo.toString()
-				+ parts.get(3) + parts.get(4) + dataOd.toString() + parts.get(5) + dataDo.toString() 
-				+ parts.get(6) + parts.get(7) + dataOd.toString() + parts.get(8) + dataDo.toString()
-				+ parts.get(9) + dataOd.toString() + parts.get(10) + dataDo.toString() + parts.get(11)
-				+ sortBy + ";"; 
-	}
-	
-	public String toStringSzczegol() {
 		
-		return parts.get(0) + pokojeData + parts.get(1) + dataOd.toString() + parts.get(2) + dataDo.toString()
-				+ parts.get(3) + rezerwacjeData + parts.get(4) + dataOd.toString() + parts.get(5) + dataDo.toString() 
-				+ parts.get(6) + wolneData + parts.get(7) + dataOd.toString() + parts.get(8) + dataDo.toString()
-				+ parts.get(9) + dataOd.toString() + parts.get(10) + dataDo.toString() + parts.get(11)
-				+ sortBy + ";"; 
+		if(szczegol) {
+			return parts.get(0) + pokojeData + parts.get(1) + dataOd.toString() + parts.get(2) + dataDo.toString()
+					+ parts.get(3) + rezerwacjeData + parts.get(4) + dataOd.toString() + parts.get(5) + dataDo.toString() 
+					+ parts.get(6) + wolneData + parts.get(7) + dataOd.toString() + parts.get(8) + dataDo.toString()
+					+ parts.get(9) + dataOd.toString() + parts.get(10) + dataDo.toString() + parts.get(11)
+					+ sortBy + ";"; 
+		} else {
+			return parts.get(0) + parts.get(1) + dataOd.toString() + parts.get(2) + dataDo.toString()
+					+ parts.get(3) + parts.get(4) + dataOd.toString() + parts.get(5) + dataDo.toString() 
+					+ parts.get(6) + parts.get(7) + dataOd.toString() + parts.get(8) + dataDo.toString()
+					+ parts.get(9) + dataOd.toString() + parts.get(10) + dataDo.toString() + parts.get(11)
+					+ sortBy + ";"; 
+		}
 	}
 
 	@Override
@@ -68,12 +72,19 @@ public class ListaPokoiTypQuery extends Query {
 		this.dataDo = new Date(dataDo.getTime());
 	}
 	
+	public void setSzczegol(boolean szczegol) {
+		this.szczegol = szczegol;
+	}
+	
+	public boolean getSzczegol() {
+		return this.szczegol;
+	}
+	
 	public static void main(String[] args) {
 		
 		ListaPokoiTypQuery query = new ListaPokoiTypQuery();
 		query.setSort(query.STAN_POKOJU, false);
 		System.out.println(query);
-		System.out.println(query.toStringSzczegol());
 	}
 
 }
