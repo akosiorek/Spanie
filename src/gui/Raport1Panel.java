@@ -70,6 +70,7 @@ public class Raport1Panel extends JPanel {
 	public Raport1Panel(WidokPanel _parent) {
 		this.parent = _parent;
 		setLayout(null);
+		setSize(800, 600);
 		
 		btnZapisz.setBounds(358, 533, 82, 25);
 		add(btnZapisz);

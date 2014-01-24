@@ -6,11 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,44 +25,42 @@ import javax.swing.table.JTableHeader;
 import raporty.*;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+import com.michaelbaranov.microba.common.CommitEvent;
+import com.michaelbaranov.microba.common.CommitListener;
 
 import dao.dbDAO;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 public class Raport2Panel extends JPanel {
 	
-	protected JButton btnZapisz;
-	protected JButton btnDrukuj;
-	protected JButton btnSzczegoly;
-	protected JButton btnWyszukaj;
+	private WidokPanel parent;
 	
-	private DatePicker datePickerOd;
-	private DatePicker datePickerDo;
+	private UslugiQuery uslugiQuery = new UslugiQuery();
 	
-	protected JTable lowerTable;
-	protected JTable upperTable;	
+	protected JButton btnZapisz = new JButton("Zapisz");
+	protected JButton btnSzczegoly = new JButton("Szczegóły");
+	protected JButton btnWyszukaj = new JButton("Wyszukaj");
+	protected JButton btnDrukuj = new JButton("Drukuj");
 	
+	protected JLabel lblDo = new JLabel("Do:");
+	protected JLabel lblOd = new JLabel("Od:");
+	private DatePicker datePickerOd = new DatePicker();
+	private DatePicker datePickerDo = new DatePicker();
+	
+	protected JTable upperTable = new JTable();	
+	protected JTable lowerTable = new JTable();	
 	protected JTableHeader lowerTableHeader;
 	protected JTableHeader upperTableHeader;
-	protected JLabel lblDo;
-	protected JLabel lblOd;
+	protected JScrollPane lowerTableScrollPane;
+	protected JScrollPane upperTableScrollPane;
+	
+	private JComboBox<String> cbFiltr = new JComboBox<String>();
 	
 	protected String upperColumnNames[];
 	protected String lowerColumnNames[];
 	
-	dbDAO db = new dbDAO();;
-	
-	JScrollPane lowerTableScrollPane;
-	JScrollPane upperTableScrollPane;
-	
-	private WidokPanel parent;
-	private boolean szczegoly = false;
-	private UslugiKlientQuery uslugiKlientQuery = new UslugiKlientQuery();
-	private UslugiNazwaQuery uslugiNazwaQuery = new UslugiNazwaQuery();
+	dbDAO db = new dbDAO();
 	
 	
-	private JComboBox<String> cbFiltr;
 	
 	/**
 	 * Create the panel.
@@ -67,169 +68,187 @@ public class Raport2Panel extends JPanel {
 	public Raport2Panel(WidokPanel _parent) {
 		this.parent = _parent;
 		setLayout(null);
+		setSize(800, 600);
 		
-		btnZapisz = new JButton("Zapisz");
 		btnZapisz.setBounds(358, 533, 82, 25);
 		add(btnZapisz);
 		
-		btnDrukuj = new JButton("Drukuj");
 		btnDrukuj.setBounds(446, 533, 80, 25);
 		add(btnDrukuj);
 		
-		btnSzczegoly = new JButton("Szczegóły");
 		btnSzczegoly.setBounds(532, 533, 105, 25);
 		add(btnSzczegoly);
 		
-		upperTable = new JTable();
 		upperTableScrollPane = new JScrollPane(upperTable);
 		upperTableScrollPane.setBounds(48, 107, 589, 171);
 		upperTable.setBorder(new LineBorder(new Color(0, 0, 0)));
 		upperTable.setAutoResizeMode(JTable.WIDTH);
 		add(upperTableScrollPane);
-		
-		lowerTable = new JTable();		
+			
 		lowerTableScrollPane = new JScrollPane(lowerTable);
-		lowerTableScrollPane.setBounds(118, 324, 0, 171);
+		lowerTableScrollPane.setBounds(48, 324, 0, 171);
 		lowerTable.setAutoResizeMode(JTable.WIDTH);
 		add(lowerTableScrollPane);
 		
-		
-		lblDo = new JLabel("Do:");
 		lblDo.setBounds(240, 32, 31, 15);
 		add(lblDo);
 		
-		lblOd = new JLabel("Od:");
 		lblOd.setBounds(48, 32, 31, 15);
 		add(lblOd);
 		
-		datePickerOd = new DatePicker();
 		datePickerOd.setBounds(74, 24, 148, 31);
 		add(datePickerOd);
 		
-		datePickerDo = new DatePicker();
-		datePickerDo.setBounds(263, 24, 148, 31);
-		add(datePickerDo);
 		
+		datePickerDo.setBounds(263, 24, 148, 31);		
+		add(datePickerDo);	
 		
-		btnWyszukaj = new JButton("Wyszukaj");
-		btnWyszukaj.setBounds(572, 27, 102, 25);
-		add(btnWyszukaj);
+		btnWyszukaj.setBounds(573, 27, 102, 25);
+		add(btnWyszukaj);		
 		
-		cbFiltr = new JComboBox<String>();
+		upperTableHeader = upperTable.getTableHeader();
+		upperTableHeader.setReorderingAllowed(false);
+
+		lowerTableHeader = lowerTable.getTableHeader();
+		lowerTableHeader.setReorderingAllowed(false);
+		
 		cbFiltr.setModel(new DefaultComboBoxModel<String>(new String[] {"nazwa usługi", "nazwisko klienta"}));
 		cbFiltr.setBounds(423, 27, 138, 25);
-		add(cbFiltr);
+		add(cbFiltr);		
 		
+		addEventHandling();		
 		
-//		btnWyszukaj.addActionListener(new ActionListener() {
-//			
-//			public void actionPerformed(ActionEvent evt) {
-//				
-//				Date dataOd = datePickerOd.getDate();
-//				Date dataDo = datePickerDo.getDate();
-//				
-//				
-//				String query;
-//				switch(cbFiltr.getSelectedIndex()) {
-//				case 0:	; break;
-//				case 1: ; break;
-//				
-//				}
-//				
-//				showResultUpper(dataOd, dataDo);
-//			}
-//		});
-//		
-//		upperTableHeader = upperTable.getTableHeader();
-//		upperTableHeader.setReorderingAllowed(false);
-//
-//		lowerTableHeader = lowerTable.getTableHeader();
-//		lowerTableHeader.setReorderingAllowed(false);
-//		lowerTableHeader.addMouseListener(new MouseAdapter() {
-//		      @Override
-//		      public void mouseClicked(MouseEvent mouseEvent) {
-//		        int index = lowerTable.convertColumnIndexToModel(lowerTable.columnAtPoint(mouseEvent.getPoint()));
-//		        if (index >= 0) {
-//		        	
-//		        	String sortedBy = listaPokoiTypQuery.getSort();
-//		        	String newSort = null;
-//		        		        
-//			        switch(index) {	        
-//			   
-//			        case 0: newSort = ListaPokoiTypQuery.NR_POKOJU; break;
-//			        case 1: newSort = ListaPokoiTypQuery.STAN_POKOJU; break;
-//			        case 2: newSort = ListaPokoiTypQuery.TYP_POKOJU; break;
-//			        case 3: newSort = ListaPokoiTypQuery.DATA_ROZP; break;
-//			        case 4: newSort = ListaPokoiTypQuery.DATA_ZAK; break;
-//			        }		       
-//			        
-//			        if(listaPokoiTypQuery.isSortedBy(newSort))
-//			        	listaPokoiTypQuery.setSort(newSort, !listaPokoiTypQuery.getSortOrder());
-//			        else
-//			        	listaPokoiTypQuery.setSort(newSort);
-//			        
-//			        if(szczegoly) showResultLower(listaPokoiTypQuery.toStringSzczegol());
-//			        else showResultLower(listaPokoiTypQuery.toString());
-//		        }
-//		      }
-//		});		
-//		
-//		showResultUpper();
-//		showResultLower(listaPokoiTypQuery.toString());
-//		
-//		btnSzczegoly.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//				szczegoly = !szczegoly;
-//				listaPokoiTypQuery.setSort(ListaPokoiTypQuery.NR_POKOJU);
-//				if(!szczegoly) {
-//					lowerTableScrollPane.setBounds(118, 324, 0, 171);
-//					showResultLower(listaPokoiTypQuery.toString());
-//				} else {
-//					lowerTableScrollPane.setBounds(118, 324, 450, 171);
-//					showResultLower(listaPokoiTypQuery.toStringSzczegol());
-//				}	
-//				
-//			}
-//		});
+		refreshUpperTable(null, null, null, null);
+//		refreshLowerTable(listaPokoiTypQuery.NR_POKOJU, false);		
 	}
 	
-	public void setUpperData(Object[][] data) {
-			
-			upperTable.setModel(new DefaultTableModel(data, upperColumnNames));
-		}
-
-	public void setLowerData(Object[][] data) {
+	public void refreshUpperTable(Date dataOd, Date dataDo) {
 		
-		lowerTable.setModel(new DefaultTableModel(data, lowerColumnNames));
+		refreshUpperTable(dataOd, dataDo, null, null);
 	}
 	
-	private void showResult(String query, JTable table) {
+	public void refreshUpperTable(String sortBy, String typ) {
 		
-		dbDAO db = new dbDAO();
+		refreshUpperTable(null, null, sortBy, typ);
+	}
+	
+	public void refreshUpperTable(Date dataOd, Date dataDo, String sortBy, String typ) {
+		
+		if(dataOd != null) uslugiQuery.setOd(dataOd);
+		if(dataDo != null) uslugiQuery.setDo(dataDo);
+		if(sortBy != null) {			
+		
+			boolean sortOrder = uslugiQuery.getSortOrder();
+			if(uslugiQuery.getSort().equals(sortBy))
+				sortOrder = !sortOrder;			
+			uslugiQuery.setSort(sortBy, sortOrder);		
+			}
+		
+		if(typ != null) uslugiQuery.setTyp(typ);
 		
 		db.establishConnection();
 		
-		ResultSet rs = db.executeQuery(query);
+		ResultSet rs = db.executeQuery(uslugiQuery.toString());
 		
 		try {
-			table.setModel(new ResultSetTableModel(rs));
+			upperTable.setModel(new ResultSetTableModel(rs));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			System.err.println(e.getMessage());
+			e.printStackTrace();		
+		}		
 		db.closeConnection();
 	}
 	
-public void showResultUpper(String query) {
+	private void addEventHandling() {
 		
-		showResult(query, upperTable);
-	}
-	
-	public void showResultLower(String query) {
+		datePickerOd.addActionListener(new ActionListener() {					
+					public void actionPerformed(ActionEvent evt) {						
+						if(datePickerOd.getDate().getTime() > datePickerDo.getDate().getTime())
+							try {
+								datePickerOd.setDate(datePickerDo.getDate());
+							} catch (PropertyVetoException e) {
+								e.printStackTrace();
+							}
+					}
+				});
+
+		datePickerDo.addActionListener(new ActionListener() {					
+			public void actionPerformed(ActionEvent evt) {						
+				if(datePickerOd.getDate().getTime() > datePickerDo.getDate().getTime())
+					try {
+						datePickerDo.setDate(datePickerOd.getDate());
+					} catch (PropertyVetoException e) {
+						e.printStackTrace();
+					}
+			}
+		});
+
+		btnWyszukaj.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent evt) {
+				
+				refreshUpperTable(datePickerOd.getDate(), datePickerDo.getDate());
+//				refreshLowerTable(datePickerOd.getDate(), datePickerDo.getDate(), listaPokoiTypQuery.getSzczegol());
+			}
+		});
 		
-		showResult(query, lowerTable);
+		upperTableHeader.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent mouseEvent) {
+		      int index = upperTable.convertColumnIndexToModel(upperTable.columnAtPoint(mouseEvent.getPoint()));
+		      if (index >= 0) {
+		      	
+	      		String newSort = null;	      		        
+		        switch(index) {	      		   
+		        case 3: newSort = UslugiQuery.ILOSC_USLUGI; break;
+		        case 0: newSort = UslugiQuery.NAZWA_USLUGI; break;
+		        case 2: newSort = UslugiQuery.NAZWISKO; break;
+		        case 1: newSort = UslugiQuery.NR_POBYTU; break;
+		        }		       		        
+		        refreshUpperTable(newSort, uslugiQuery.getTyp());
+		      }
+		    }
+		});		
+
+//		lowerTableHeader.addMouseListener(new MouseAdapter() {
+//		    @Override
+//		    public void mouseClicked(MouseEvent mouseEvent) {
+//		      int index = lowerTable.convertColumnIndexToModel(lowerTable.columnAtPoint(mouseEvent.getPoint()));
+//		      if (index >= 0) {
+//		      	
+//	      		String newSort = null;	      		        
+//		        switch(index) {	      		   
+//		        case 0: newSort = UslugiQuery.ILOSC_USLUGI; break;
+//		        case 1: newSort = UslugiQuery.NAZWA_USLUGI; break;
+//		        case 2: newSort = UslugiQuery.NAZWISKO; break;
+//		        case 3: newSort = UslugiQuery.NR_POBYTU; break;
+//		        }		       		        
+//		        refreshLowerTable(newSort);
+//		      }
+//		    }
+//		});		
+
+//		btnSzczegoly.addActionListener(new ActionListener() {		
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {			
+//				
+////				boolean szczegoly = !listaPokoiTypQuery.getSzczegol();
+//				if(!szczegoly) lowerTableScrollPane.setBounds(48, 324, 0, 171);
+//				else lowerTableScrollPane.setBounds(48, 324, 450, 171);
+//				
+//				refreshLowerTable(ListaPokoiTypQuery.NR_POKOJU, szczegoly);
+//				
+//			}
+//		});		
+		
+		cbFiltr.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				
+				switch(cbFiltr.getSelectedIndex()) {
+					case 0: refreshUpperTable(null, uslugiQuery.NAZWA); break;
+					case 1: refreshUpperTable(null, uslugiQuery.KLIENT); break;
+				}
+			}
+		});
 	}
 }

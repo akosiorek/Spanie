@@ -121,7 +121,8 @@ public class dbDAO {
 			
 		} catch(SQLException e) {
 			
-			System.err.println("Couldn't execute a statement");
+			System.err.println("Couldn't execute the following statement:");
+			System.err.println(query);
 			if(statement != null)
 				try {
 					statement.close();
