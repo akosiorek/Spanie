@@ -1,4 +1,4 @@
-select Klient.nazwisko, HISTORIA_POBYTOW.nr_dokumentu_klienta, HISTORIA_POBYTOW.nr_pobytu, HISTORIA_POBYTOW.data_rozpoczecia, HISTORIA_POBYTOW.data_zakonczenia, DLUZNICY.nr_dokumentu_klienta from HISTORIA_POBYTOW left join Klient on HISTORIA_POBYTOW.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta left join DLUZNICY on Klient.nr_dokumentu_klienta=DLUZNICY.nr_dokumentu_klienta where HISTORIA_POBYTOW.data_rozpoczecia<='2013-02-07' and HISTORIA_POBYTOW.data_zakonczenia>='2013-02-07' order by
+select HISTORIA_POBYTOW.nr_pobytu, HISTORIA_POBYTOW.nr_dokumentu_klienta, Klient.nazwisko, HISTORIA_POBYTOW.data_rozpoczecia as 'od', HISTORIA_POBYTOW.data_zakonczenia as 'do', DLUZNICY.nr_dokumentu_klienta from HISTORIA_POBYTOW left join Klient on HISTORIA_POBYTOW.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta left join DLUZNICY on Klient.nr_dokumentu_klienta=DLUZNICY.nr_dokumentu_klienta where HISTORIA_POBYTOW.data_rozpoczecia<='2013-02-07' and HISTORIA_POBYTOW.data_zakonczenia>='2013-02-07' order by
 HISTORIA_POBYTOW.data_rozpoczecia, HISTORIA_POBYTOW.data_zakonczenia, Klient.nazwisko ASC;
 
 
@@ -7,3 +7,10 @@ OPCJA DODATKOWA
 HISTORIA_POBYTOW.data_rozpoczecia, HISTORIA_POBYTOW.data_zakonczenia, Klient.nazwisko ASC;
 
 *ASC|DESC
+
+"select distinct Klient.nazwisko,  DLUZNICY.opis from HISTORIA_POBYTOW left join Klient on HISTORIA_POBYTOW.nr_dokumentu_klienta=Klient.nr_dokumentu_klienta join DLUZNICY on Klient.nr_dokumentu_klienta=DLUZNICY.nr_dokumentu_klienta where HISTORIA_POBYTOW.data_rozpoczecia<='"
+
+
+"' and HISTORIA_POBYTOW.data_zakonczenia>='"
+
+' order by HISTORIA_POBYTOW.data_rozpoczecia, HISTORIA_POBYTOW.data_zakonczenia, Klient.nazwisko ASC;

@@ -9,19 +9,12 @@ public class NumPokojeZajeteQuery extends Query {
 	
 	public NumPokojeZajeteQuery() {
 		
-		dataOd = new Date(0, 0, 0);
-		dataDo = new Date(1000, 0, 0);
-	}
-	
-public NumPokojeZajeteQuery(java.util.Date dataOd, java.util.Date dataDo ) {
-		
-		this.dataOd = new Date(dataOd.getTime());
-		this.dataDo = new Date(dataDo.getTime());
+		dataOd = new Date(new java.util.Date().getTime());
 	}
 	
 	@Override
 	public String toString() {
-		return parts.get(0) + dataOd.toString() + parts.get(1) + dataDo.toString() + parts.get(2);
+		return parts.get(0) + dataOd.toString() + parts.get(1) + dataOd.toString() + parts.get(2);
 	}
 
 	@Override
@@ -34,11 +27,6 @@ public NumPokojeZajeteQuery(java.util.Date dataOd, java.util.Date dataDo ) {
 	public void setDataOd(java.util.Date dataOd) {
 			this.dataOd.setTime(dataOd.getTime());
 		}
-
-	public void setDataDo(java.util.Date dataDo) {
-		this.dataDo.setTime(dataDo.getTime());
-	}
-	
 	public static void main(String[] args) {
 		
 		NumPokojeZajeteQuery query = new NumPokojeZajeteQuery();

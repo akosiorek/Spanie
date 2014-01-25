@@ -4,8 +4,7 @@ import java.sql.Date;
 
 public class ListaPokoiTypQuery extends Query {
 	
-	private java.sql.Date dataOd;
-	private java.sql.Date dataDo;
+	private java.sql.Date data;
 	
 	private boolean szczegol;
 	
@@ -21,8 +20,7 @@ public class ListaPokoiTypQuery extends Query {
 	
 	public ListaPokoiTypQuery() {
 		
-		dataDo = new Date(0, 0, 0);
-		dataOd = new Date(1000, 0, 0);
+		data = new Date(new java.util.Date().getTime());
 		szczegol = false;
 		setSort(NR_POKOJU);
 	}
@@ -31,16 +29,16 @@ public class ListaPokoiTypQuery extends Query {
 	public String toString() {
 		
 		if(szczegol) {
-			return parts.get(0) + pokojeData + parts.get(1) + dataOd.toString() + parts.get(2) + dataDo.toString()
-					+ parts.get(3) + rezerwacjeData + parts.get(4) + dataOd.toString() + parts.get(5) + dataDo.toString() 
-					+ parts.get(6) + wolneData + parts.get(7) + dataOd.toString() + parts.get(8) + dataDo.toString()
-					+ parts.get(9) + dataOd.toString() + parts.get(10) + dataDo.toString() + parts.get(11)
+			return parts.get(0) + pokojeData + parts.get(1) + data.toString() + parts.get(2) + data.toString()
+					+ parts.get(3) + rezerwacjeData + parts.get(4) + data.toString() + parts.get(5) + data.toString() 
+					+ parts.get(6) + wolneData + parts.get(7) + data.toString() + parts.get(8) + data.toString()
+					+ parts.get(9) + data.toString() + parts.get(10) + data.toString() + parts.get(11)
 					+ sortBy + ";"; 
 		} else {
-			return parts.get(0) + parts.get(1) + dataOd.toString() + parts.get(2) + dataDo.toString()
-					+ parts.get(3) + parts.get(4) + dataOd.toString() + parts.get(5) + dataDo.toString() 
-					+ parts.get(6) + parts.get(7) + dataOd.toString() + parts.get(8) + dataDo.toString()
-					+ parts.get(9) + dataOd.toString() + parts.get(10) + dataDo.toString() + parts.get(11)
+			return parts.get(0) + parts.get(1) + data.toString() + parts.get(2) + data.toString()
+					+ parts.get(3) + parts.get(4) + data.toString() + parts.get(5) + data.toString() 
+					+ parts.get(6) + parts.get(7) + data.toString() + parts.get(8) + data.toString()
+					+ parts.get(9) + data.toString() + parts.get(10) + data.toString() + parts.get(11)
 					+ sortBy + ";"; 
 		}
 	}
@@ -64,12 +62,8 @@ public class ListaPokoiTypQuery extends Query {
 		parts.add("')");
 	}
 	
-	public void setOd(java.util.Date dataOd) {
-		this.dataOd = new Date(dataOd.getTime());		
-	}
-	
-	public void setDo(java.util.Date dataDo) {
-		this.dataDo = new Date(dataDo.getTime());
+	public void setData(java.util.Date data) {
+		this.data = new Date(data.getTime());		
 	}
 	
 	public void setSzczegol(boolean szczegol) {

@@ -5,24 +5,16 @@ import java.sql.Date;
 public class NumPokojeWolneQuery extends Query {
 
 	private Date dataOd;
-	private Date dataDo;
 	
 	public NumPokojeWolneQuery() {
 		
-		dataOd = new Date(0, 0, 0);
-		dataDo = new Date(1000, 0, 0);
-	}
-	
-	public NumPokojeWolneQuery(java.util.Date dataOd, java.util.Date dataDo ) {
-		
-		this.dataOd = new Date(dataOd.getTime());
-		this.dataDo = new Date(dataDo.getTime());
+		dataOd = new Date(new java.util.Date().getTime());
 	}
 	
 	@Override
 	public String toString() {
-		return parts.get(0) + dataOd.toString() + parts.get(1) + dataDo.toString()
-				+ parts.get(2) + dataOd.toString() + parts.get(3) + dataDo.toString() + parts.get(4);
+		return parts.get(0) + dataOd.toString() + parts.get(1) + dataOd.toString()
+				+ parts.get(2) + dataOd.toString() + parts.get(3) + dataOd.toString() + parts.get(4);
 	}
 	
 	@Override
@@ -37,10 +29,6 @@ public class NumPokojeWolneQuery extends Query {
 	public void setDataOd(java.util.Date dataOd) {
 			this.dataOd.setTime(dataOd.getTime());
 		}
-	
-	public void setDataDo(java.util.Date dataDo) {
-		this.dataDo.setTime(dataDo.getTime());
-	}
 	
 	public static void main(String[] args) {
 		

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -17,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import raporty.ListaPokoiTypQuery;
@@ -26,8 +24,6 @@ import raporty.NumPokojeWolneQuery;
 import raporty.NumPokojeZajeteQuery;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
-import com.michaelbaranov.microba.common.CommitEvent;
-import com.michaelbaranov.microba.common.CommitListener;
 
 import dao.dbDAO;
 
@@ -45,10 +41,8 @@ public class Raport1Panel extends JPanel {
 	protected JButton btnWyszukaj = new JButton("Wyszukaj");
 	protected JButton btnDrukuj = new JButton("Drukuj");
 	
-	protected JLabel lblDo = new JLabel("Do:");
 	protected JLabel lblOd = new JLabel("Od:");
 	private DatePicker datePickerOd = new DatePicker();
-	private DatePicker datePickerDo = new DatePicker();
 	
 	protected JTable upperTable = new JTable();	
 	protected JTable lowerTable = new JTable();	
@@ -92,20 +86,13 @@ public class Raport1Panel extends JPanel {
 		lowerTable.setAutoResizeMode(JTable.WIDTH);
 		add(lowerTableScrollPane);
 		
-		lblDo.setBounds(240, 32, 31, 15);
-		add(lblDo);
-		
 		lblOd.setBounds(48, 32, 31, 15);
 		add(lblOd);
 		
 		datePickerOd.setBounds(74, 24, 148, 31);
 		add(datePickerOd);
 		
-		
-		datePickerDo.setBounds(263, 24, 148, 31);		
-		add(datePickerDo);	
-		
-		btnWyszukaj.setBounds(435, 27, 102, 25);
+		btnWyszukaj.setBounds(234, 27, 102, 25);
 		add(btnWyszukaj);		
 		
 		upperTableHeader = upperTable.getTableHeader();
@@ -139,38 +126,34 @@ public class Raport1Panel extends JPanel {
 		db.closeConnection();
 	}
 	
-	public void refreshUpperTable(Date dataOd, Date dataDo) {
+	public void refreshUpperTable(Date dataOd) {
 		
 		numPokojeWolneQuery.setDataOd(dataOd);
-		numPokojeWolneQuery.setDataDo(dataDo);
-		numPokojeRezerwQuery.setDataOd(dataOd);
-		numPokojeRezerwQuery.setDataDo(dataDo);
+		numPokojeRezerwQuery.setDataOd(dataOd);;
 		numPokojeZajeteQuery.setDataOd(dataOd);
-		numPokojeZajeteQuery.setDataDo(dataDo);
 		
 		showResultUpper();
 	}
 	
 	public void refreshLowerTable(String sortBy) {
 		
-		refreshLowerTable(null, null, sortBy, listaPokoiTypQuery.getSzczegol());
+		refreshLowerTable(null, sortBy, listaPokoiTypQuery.getSzczegol());
 	}
 	
 	
 	public void refreshLowerTable(String sortBy, boolean szczegol) {
 		
-		refreshLowerTable(null, null, sortBy, szczegol);
+		refreshLowerTable(null, sortBy, szczegol);
 	}
 	
-	public void refreshLowerTable(Date dataOd, Date dataDo, boolean szczegol) {
+	public void refreshLowerTable(Date dataOd, boolean szczegol) {
 		
-		refreshLowerTable(dataOd, dataDo, listaPokoiTypQuery.getSort(), szczegol);
+		refreshLowerTable(dataOd, listaPokoiTypQuery.getSort(), szczegol);
 	}
 	
-	public void refreshLowerTable(Date dataOd, Date dataDo, String sortBy, boolean szczegol) {
+	public void refreshLowerTable(Date dataOd, String sortBy, boolean szczegol) {
 		
-		if(dataOd != null) listaPokoiTypQuery.setOd(dataOd);
-		if(dataDo != null) listaPokoiTypQuery.setDo(dataDo);
+		if(dataOd != null) listaPokoiTypQuery.setData(dataOd);
 		
 		boolean sortOrder = listaPokoiTypQuery.getSortOrder();;
 		if(listaPokoiTypQuery.getSort().equals(sortBy))
@@ -194,35 +177,13 @@ public class Raport1Panel extends JPanel {
 	}
 	
 	private void addEventHandling() {
-		
-		datePickerOd.addActionListener(new ActionListener() {					
-					public void actionPerformed(ActionEvent evt) {						
-						if(datePickerOd.getDate().getTime() > datePickerDo.getDate().getTime())
-							try {
-								datePickerOd.setDate(datePickerDo.getDate());
-							} catch (PropertyVetoException e) {
-								e.printStackTrace();
-							}
-					}
-				});
-
-		datePickerDo.addActionListener(new ActionListener() {					
-			public void actionPerformed(ActionEvent evt) {						
-				if(datePickerOd.getDate().getTime() > datePickerDo.getDate().getTime())
-					try {
-						datePickerDo.setDate(datePickerOd.getDate());
-					} catch (PropertyVetoException e) {
-						e.printStackTrace();
-					}
-			}
-		});
 
 		btnWyszukaj.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent evt) {
 				
-				refreshUpperTable(datePickerOd.getDate(), datePickerDo.getDate());
-				refreshLowerTable(datePickerOd.getDate(), datePickerDo.getDate(), listaPokoiTypQuery.getSzczegol());
+				refreshUpperTable(datePickerOd.getDate());
+				refreshLowerTable(datePickerOd.getDate(), listaPokoiTypQuery.getSzczegol());
 			}
 		});
 
