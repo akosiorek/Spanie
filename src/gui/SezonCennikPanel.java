@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 
 public class SezonCennikPanel extends JPanel {
 	private JPanel pokojePanel;
-	private JLabel lblIloek;
+	private JLabel lblTypPokoju;
 	private JLabel lblStaraCena;
 	private JLabel lblNowaCena;
 	private JComboBox comboLozka;
@@ -32,37 +32,32 @@ public class SezonCennikPanel extends JPanel {
 	 */
 	public SezonCennikPanel(WidokPanel _parent) {
 		parent = _parent;
-		
-		SpringLayout springLayout = new SpringLayout();
-		setLayout(springLayout);
+		setLayout(null);
 		
 		pokojePanel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, pokojePanel, 37, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, pokojePanel, 80, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, pokojePanel, 219, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, pokojePanel, 323, SpringLayout.WEST, this);
+		pokojePanel.setBounds(149, 36, 243, 182);
 		pokojePanel.setBorder(BorderFactory.createTitledBorder("Pokoje"));
 		add(pokojePanel);
 		SpringLayout sl_pokojePanel = new SpringLayout();
 		pokojePanel.setLayout(sl_pokojePanel);
 		
-		lblIloek = new JLabel("Ilość łóżek:");
-		sl_pokojePanel.putConstraint(SpringLayout.WEST, lblIloek, 0, SpringLayout.WEST, pokojePanel);
-		pokojePanel.add(lblIloek);
+		lblTypPokoju = new JLabel("Typ pokoju:");
+		sl_pokojePanel.putConstraint(SpringLayout.WEST, lblTypPokoju, 0, SpringLayout.WEST, pokojePanel);
+		pokojePanel.add(lblTypPokoju);
 		
 		lblStaraCena = new JLabel("Stara cena:");
-		sl_pokojePanel.putConstraint(SpringLayout.WEST, lblStaraCena, 0, SpringLayout.WEST, lblIloek);
+		sl_pokojePanel.putConstraint(SpringLayout.WEST, lblStaraCena, 0, SpringLayout.WEST, lblTypPokoju);
 		pokojePanel.add(lblStaraCena);
 		
 		lblNowaCena = new JLabel("Nowa cena:");
 		sl_pokojePanel.putConstraint(SpringLayout.SOUTH, lblStaraCena, -14, SpringLayout.NORTH, lblNowaCena);
-		sl_pokojePanel.putConstraint(SpringLayout.WEST, lblNowaCena, 0, SpringLayout.WEST, lblIloek);
+		sl_pokojePanel.putConstraint(SpringLayout.WEST, lblNowaCena, 0, SpringLayout.WEST, lblTypPokoju);
 		pokojePanel.add(lblNowaCena);
 		
 		comboLozka = new JComboBox();
-		sl_pokojePanel.putConstraint(SpringLayout.WEST, comboLozka, 12, SpringLayout.EAST, lblIloek);
+		sl_pokojePanel.putConstraint(SpringLayout.WEST, comboLozka, 12, SpringLayout.EAST, lblTypPokoju);
 		sl_pokojePanel.putConstraint(SpringLayout.EAST, comboLozka, -14, SpringLayout.EAST, pokojePanel);
-		sl_pokojePanel.putConstraint(SpringLayout.NORTH, lblIloek, 5, SpringLayout.NORTH, comboLozka);
+		sl_pokojePanel.putConstraint(SpringLayout.NORTH, lblTypPokoju, 5, SpringLayout.NORTH, comboLozka);
 		pokojePanel.add(comboLozka);
 		
 		txtStaraCena = new JTextField();
@@ -99,6 +94,7 @@ public class SezonCennikPanel extends JPanel {
 		pokojePanel.add(btnAnulujPokoje);
 		
 		btnZatwierd = new JButton("Zatwierdź");
+		btnZatwierd.setBounds(174, 238, 88, 27);
 		btnZatwierd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -107,17 +103,16 @@ public class SezonCennikPanel extends JPanel {
 		});
 		add(btnZatwierd);
 		
+		
+		
 		btnAnuluj = new JButton("Anuluj");
+		btnAnuluj.setBounds(268, 238, 66, 27);
 		btnAnuluj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				parent.wyswietl(parent.SEZON);	
 			}
 		});
-		springLayout.putConstraint(SpringLayout.NORTH, btnAnuluj, 20, SpringLayout.SOUTH, pokojePanel);
-		springLayout.putConstraint(SpringLayout.WEST, btnAnuluj, 199, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.NORTH, btnZatwierd, 0, SpringLayout.NORTH, btnAnuluj);
-		springLayout.putConstraint(SpringLayout.EAST, btnZatwierd, -6, SpringLayout.WEST, btnAnuluj);
 		add(btnAnuluj);
 
 	}

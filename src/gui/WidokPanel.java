@@ -19,12 +19,15 @@ public class WidokPanel extends CardPanel<MainWindow> {
 	 final static String RAPORT1 = "RAPORT1";
 	 final static String RAPORT2 = "RAPORT2";
 	 final static String RAPORT3 = "RAPORT3";
+	 
+	 private String sezon;
 	
 	/**
 	 * Create the panel.
 	 */
 	public WidokPanel(MainWindow _parent) {
 		super(_parent);
+		
 		
 		sezonPanel = new SezonPanel(this);
 		sezonCennikPanel = new SezonCennikPanel(this);
@@ -47,6 +50,16 @@ public class WidokPanel extends CardPanel<MainWindow> {
 		
 		wyswietl(EMPTY);
 		
+	}
+	
+	public String getSezon() {
+		
+		return sezon;
+	}
+	
+	public void setSezon(String sezon) {
+		
+		this.sezon = sezon;
 	}
 
 }

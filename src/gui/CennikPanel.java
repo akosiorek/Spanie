@@ -37,23 +37,15 @@ public class CennikPanel extends JPanel{
 	 */
 	public CennikPanel(WidokPanel _parent) {
 		parent = _parent;
-		
-		SpringLayout springLayout = new SpringLayout();
-		setLayout(springLayout);
+		setLayout(null);
 		
 		pokojePanel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, pokojePanel, 46, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, pokojePanel, 21, SpringLayout.WEST, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, pokojePanel, -180, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, pokojePanel, -302, SpringLayout.EAST, this);
+		pokojePanel.setBounds(84, 73, 228, 121);
 		pokojePanel.setBorder(BorderFactory.createTitledBorder("Pokoje"));
 		add(pokojePanel);
 		
 		uslugaPanel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, uslugaPanel, 46, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, uslugaPanel, 29, SpringLayout.EAST, pokojePanel);
-		springLayout.putConstraint(SpringLayout.SOUTH, uslugaPanel, 0, SpringLayout.SOUTH, pokojePanel);
-		springLayout.putConstraint(SpringLayout.EAST, uslugaPanel, -45, SpringLayout.EAST, this);
+		uslugaPanel.setBounds(319, 73, 240, 116);
 		uslugaPanel.setBorder(BorderFactory.createTitledBorder("Usługa dodatkowa"));
 		pokojePanel.setLayout(new MigLayout("", "[79px][][12px][][80px][][][]", "[24px][25px]"));
 		
@@ -79,7 +71,7 @@ public class CennikPanel extends JPanel{
 		uslugaPanel.add(btnWyszukajUsluge, "cell 1 1,alignx left,aligny top");
 		
 		lblStaraCena = new JLabel(" Stara cena:");
-		springLayout.putConstraint(SpringLayout.NORTH, lblStaraCena, 38, SpringLayout.SOUTH, pokojePanel);
+		lblStaraCena.setBounds(280, 208, 77, 15);
 		
 		btnWyszukajLoza = new JButton("Wyszukaj");
 		btnWyszukajLoza.addActionListener(new ActionListener() {
@@ -90,41 +82,35 @@ public class CennikPanel extends JPanel{
 		add(lblStaraCena);
 		
 		lblNowaCena = new JLabel("Nowa cena:");
-		springLayout.putConstraint(SpringLayout.NORTH, lblNowaCena, 6, SpringLayout.SOUTH, lblStaraCena);
-		springLayout.putConstraint(SpringLayout.EAST, lblNowaCena, 0, SpringLayout.EAST, pokojePanel);
+		lblNowaCena.setBounds(285, 229, 73, 15);
 		add(lblNowaCena);
 		
 		textField = new JTextField();
-		springLayout.putConstraint(SpringLayout.EAST, lblStaraCena, -30, SpringLayout.WEST, textField);
-		springLayout.putConstraint(SpringLayout.NORTH, textField, -2, SpringLayout.NORTH, lblStaraCena);
-		springLayout.putConstraint(SpringLayout.WEST, textField, 0, SpringLayout.WEST, uslugaPanel);
+		textField.setBounds(387, 206, 122, 27);
 		add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		springLayout.putConstraint(SpringLayout.NORTH, textField_1, -2, SpringLayout.NORTH, lblNowaCena);
-		springLayout.putConstraint(SpringLayout.WEST, textField_1, 0, SpringLayout.WEST, uslugaPanel);
+		textField_1.setBounds(387, 227, 122, 27);
 		add(textField_1);
 		textField_1.setColumns(10);
 		
 		btnZatwierdz = new JButton("Zatwiedź");
+		btnZatwierdz.setBounds(348, 266, 83, 27);
 		btnZatwierdz.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		springLayout.putConstraint(SpringLayout.WEST, btnZatwierdz, 0, SpringLayout.WEST, lblNowaCena);
 		add(btnZatwierdz);
 		
 		btnAnuluj = new JButton("Anuluj");
+		btnAnuluj.setBounds(443, 266, 66, 27);
 		btnAnuluj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				parent.wyswietl(parent.EMPTY);	
 			}
 		});
-		springLayout.putConstraint(SpringLayout.NORTH, btnZatwierdz, 0, SpringLayout.NORTH, btnAnuluj);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAnuluj, 25, SpringLayout.SOUTH, textField_1);
-		springLayout.putConstraint(SpringLayout.EAST, btnAnuluj, 0, SpringLayout.EAST, textField);
 		add(btnAnuluj);
 
 	}

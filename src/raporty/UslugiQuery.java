@@ -22,7 +22,7 @@ public class UslugiQuery extends Query {
 		dataOd = new Date(new java.util.Date().getTime());
 		typ = KLIENT;
 		setSort(NAZWA_USLUGI, true);
-		usluga = new RodzajeUslug().getUslugi().get(0);
+		usluga = new RodzajeUslug().getEntries().get(0);
 	}
 	
 	@Override

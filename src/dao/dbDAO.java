@@ -26,25 +26,10 @@ public class dbDAO {
 	private String password;
 	private String driver;
 	private String url;
-	
-	private static final String QUERIES = "resources//query.properties";
-	private static final String reportA = "report1";
-	private static final String reportB = "report2";
-	private static final String reportC = "report3";
-	private static final String reportD = "report4";
-	
-	private dbDAO db;
-	
-	public String query1;
-	public String query2;
-	public String query3;
-	public String query4;
-	
 	public dbDAO() {
 		
 		connection = null;
 		readProperties();
-		readQueries();
 	}
 	
 	
@@ -59,20 +44,6 @@ public class dbDAO {
 			dbName = prop.getProperty(DB_NAME);
 			userName = prop.getProperty(USER_NAME);
 			password = prop.getProperty(PASSWORD);
-			
-		} catch(IOException e) {
-			System.err.println("Couldn't read any database properties");
-		}		
-	}
-	
-	private void readQueries() {
-		
-		Properties prop = new Properties();
-		try {
-			prop.load(new FileInputStream(QUERIES));
-			
-			query1 = prop.getProperty(reportA);
-			query2 = prop.getProperty(reportB);
 			
 		} catch(IOException e) {
 			System.err.println("Couldn't read any database properties");
@@ -127,11 +98,41 @@ public class dbDAO {
 				try {
 					statement.close();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 		}
 		
 		return rs;
+	}
+	
+	public int executeUpdate(String query) {
+		
+		establishConnection();
+		
+		int result = -1;
+		try {
+			statement = connection.createStatement();
+			result = statement.executeUpdate(query);
+			
+		} catch(SQLException e) {
+			
+			System.err.println("Couldn't execute the following statement:");
+			System.err.println(query);
+			if(statement != null)
+				try {
+					statement.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+		}
+		
+		closeConnection();
+		
+		System.out.println(result);
+		return result;
+	}
+	
+	public static void main(String[] args) {
+			
 	}
 }

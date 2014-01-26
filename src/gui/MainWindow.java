@@ -42,6 +42,8 @@ public class MainWindow {
 	 JButton btnZaloguj;
 	 WidokPanel widokPanel;	
 	 
+	 
+	 
 	 boolean zalogowany;
 	 boolean admin;
 	 

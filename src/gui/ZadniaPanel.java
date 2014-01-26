@@ -25,6 +25,9 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 	 private JButton btnRaport2;
 	 private JButton btnRaport3;
 	 
+	 private PobytManager pobytManager = new PobytManager();
+	 
+	 
 	/**
 	 * Create the panel.
 	 */
@@ -49,9 +52,11 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 			public void actionPerformed(ActionEvent arg0) {
 				if(parent.sprawdzLogowanie()) {
 					
+					pobytManager.setState(PobytManager.Stan.NOWY_POBYT);
 				}
 			}
 		});
+		
 		SpringLayout sl_zwyklePanel = new SpringLayout();
 		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnNowyPobyt, 15, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnNowyPobyt, 12, SpringLayout.WEST, zwyklePanel);
@@ -65,6 +70,7 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 			public void actionPerformed(ActionEvent arg0) {
 				if(parent.sprawdzLogowanie()) {
 					
+					pobytManager.setState(PobytManager.Stan.ISTNIEJACY_POBYT);
 				}
 			}
 		});
@@ -81,6 +87,7 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 			public void actionPerformed(ActionEvent e) {
 				if(parent.sprawdzLogowanie()) {
 					
+					pobytManager.setState(PobytManager.Stan.NOWA_REZERWACJA);
 				}
 			}
 		});
@@ -94,7 +101,7 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		btnIstniejcaRezerwacja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(parent.sprawdzLogowanie()) {
-					
+					pobytManager.setState(PobytManager.Stan.ISTNIEJACA_REZERWACJA);
 				}
 			}
 		});

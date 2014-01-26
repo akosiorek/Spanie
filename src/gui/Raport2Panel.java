@@ -108,7 +108,7 @@ public class Raport2Panel extends JPanel {
 		add(cbFiltr);		
 		
 		cbUslugi.setBounds(234, 64, 138, 24);
-		cbUslugi.setModel(new DefaultComboBoxModel<String>(new RodzajeUslug().getUslugiArray()));
+		cbUslugi.setModel(new DefaultComboBoxModel<String>(new RodzajeUslug().getEntriesArray()));
 		add(cbUslugi);
 		
 		addEventHandling();		

@@ -85,7 +85,7 @@ public class Raport3Panel extends JPanel {
 		datePickerOd.setBounds(74, 24, 148, 31);
 		add(datePickerOd);
 		
-		btnWyszukaj.setBounds(384, 27, 102, 25);
+		btnWyszukaj.setBounds(234, 27, 102, 25);
 		add(btnWyszukaj);		
 		
 		upperTableHeader = upperTable.getTableHeader();
