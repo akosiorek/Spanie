@@ -61,5 +61,10 @@ public class WidokPanel extends CardPanel<MainWindow> {
 		
 		this.sezon = sezon;
 	}
+	
+	public void addPanel(JPanel panel, String name) {
+		
+		add(panel, name);
+	}
 
 }

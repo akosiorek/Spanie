@@ -253,7 +253,11 @@ public class DaneKlientaFrame extends JFrame {
 					break;
 					
 				case NOWY_POBYT: 
-					parent.show(Okno.REZERWACJA_KLIENTA);
+					
+					if(checkIfRezerwacja())
+						parent.show(Okno.REZERWACJA_KLIENTA);
+					else
+						parent.show(Okno.POKOJE);					
 					break;
 				
 				case ISTNIEJACY_POBYT: 
@@ -282,7 +286,6 @@ public class DaneKlientaFrame extends JFrame {
 		
 		String id = txtNumerDokumentu.getText();
 		String query = "select if( exists (select * from DLUZNICY where nr_dokumentu_klienta = \'" + id + "\'), \"tak\", \"nie\") as dluznik;";
-		System.out.println(query);
 		ResultSet rs = db.executeQuery(query);
 		
 		try {
@@ -319,5 +322,26 @@ public class DaneKlientaFrame extends JFrame {
 			}
 		}			
 		return allNull;		
+	}
+	
+	private boolean checkIfRezerwacja() {
+		
+		boolean rezerwacja = false;
+		
+		String query = "select * from REZERWACJA where nr_dokumentu_klienta = '" 
+				+ txtNumerDokumentu.getText() + "';";
+		
+		db.establishConnection();
+		ResultSet rs = db.executeQuery(query);
+		try {
+			if(rs.next()) 
+				rezerwacja = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		db.closeConnection();
+		
+		return rezerwacja;
 	}
 }

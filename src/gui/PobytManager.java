@@ -1,12 +1,16 @@
 package gui;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class PobytManager {
 	
 	private DaneKlientaFrame daneKlientaFrame = new DaneKlientaFrame();
 	private RezerwacjeKlientaFrame rezerwacjeKlientaFrame = new RezerwacjeKlientaFrame();
 	private PokojeFrame pokojeFrame = new PokojeFrame();
+	private PobytPanel pobytPanel = new PobytPanel();
+	private UslugaDodatkowaFrame uslugaDodatkowaFrame = new UslugaDodatkowaFrame();
 	
 	
 	private String imie= "";
@@ -14,19 +18,78 @@ public class PobytManager {
 	private String rodzajDokumentu= "";
 	private String numerDokumentu= "";
 	private String typPokoju= "";
+	private String nrPokoju = "";
+	public String getNrPokoju() {
+		return nrPokoju;
+	}
+
+	public void setNrPokoju(String nrPokoju) {
+		this.nrPokoju = nrPokoju;
+	}
+
+	private String cenaPokoju = "";
+	
+	public String getCenaPokoju() {
+		return cenaPokoju;
+	}
+
+	public void setCenaPokoju(String cenaPokoju) {
+		this.cenaPokoju = cenaPokoju;
+	}
+
 	private Date dataOd= new Date();
 	private Date dataDo= new Date();
 	private String nrRezerwacji= "";
+	private List<String> uslugiDodatkowe = new ArrayList<String>();
+	private List<String> cenyUslugDodatkowych = new ArrayList<String>();
+	
+	private MainWindow parent;
+	
+	public static final String POBYT_PANEL = "POBYT_PANEL";
+	
+	public void setParent(MainWindow parent) {
+		
+		this.parent = parent;
+		parent.widokPanel.addPanel(pobytPanel, POBYT_PANEL);
+	}
 	
 	public PobytManager() {
 		
 		daneKlientaFrame.setParent(this);
 		rezerwacjeKlientaFrame.setParent(this);
 		pokojeFrame.setParent(this);
+		pobytPanel.setParent(this);	
+		
+		
+		uslugaDodatkowaFrame.setParent(this);
 		state = Stan.NOWA_REZERWACJA;
 	}
 	
 	
+
+	public List<String> getUslugiDodatkowe() {
+		return uslugiDodatkowe;
+	}
+
+
+
+	public void setUslugiDodatkowe(List<String> uslugiDodatkowe) {
+		this.uslugiDodatkowe = uslugiDodatkowe;
+	}
+
+
+
+	public List<String> getCenyUslugDodatkowych() {
+		return cenyUslugDodatkowych;
+	}
+
+
+
+	public void setCenyUslugDodatkowych(List<String> cenyUslugDodatkowych) {
+		this.cenyUslugDodatkowych = cenyUslugDodatkowych;
+	}
+
+
 
 	public String getNrRezerwacji() {
 		return nrRezerwacji;
@@ -58,7 +121,8 @@ public class PobytManager {
 		REZERWACJA_KLIENTA,
 		POKOJE,
 		REZERWACJA,
-		POBYT;
+		POBYT,
+		USLUGA_DODATKOWA;
 	}
 	
 	Okno okno;
@@ -84,6 +148,7 @@ public class PobytManager {
 		case POKOJE: pokojeFrame.setVisible(false); break;
 		case REZERWACJA: break;
 		case POBYT: break;
+		case USLUGA_DODATKOWA: uslugaDodatkowaFrame.setVisible(false); break;
 		}
 		
 		this.okno = okno;
@@ -93,8 +158,9 @@ public class PobytManager {
 		case DANE_KLIENTA: daneKlientaFrame.setVisible(true); break;
 		case REZERWACJA_KLIENTA: rezerwacjeKlientaFrame.setVisible(true); break;
 		case POKOJE: pokojeFrame.setVisible(true); break;
-		case REZERWACJA: break;
-		case POBYT: break;
+		case REZERWACJA: parent.widokPanel.wyswietl(POBYT_PANEL);break;
+		case POBYT: parent.widokPanel.wyswietl(POBYT_PANEL); break;
+		case USLUGA_DODATKOWA: uslugaDodatkowaFrame.setVisible(true); break;
 		}
 	}
 	
@@ -144,5 +210,12 @@ public class PobytManager {
 
 	public void setDataDo(Date dataDo) {
 		this.dataDo = dataDo;
+	}
+	
+public void notifyDodanieUslugi() {
+		
+	pobytPanel.notifyDodanieUslugi();	
+	
+	
 	}
 }

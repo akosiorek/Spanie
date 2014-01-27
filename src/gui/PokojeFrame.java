@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -113,9 +114,32 @@ public class PokojeFrame extends JFrame {
 			@SuppressWarnings("incomplete-switch")
 			public void actionPerformed(ActionEvent e) {
 				
+				
+				if(tableWyniki.getRowCount() == 0) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "Nie znaleziono wolnych pokoi danego typu.", "Brak pokoi danego typu",
+					        JOptionPane.ERROR_MESSAGE);	
+					return;
+				}
+				
 				parent.setDataOd(datePickerOd.getDate());
 				parent.setDataDo(datePickerDo.getDate());
-				parent.setTypPokoju(cmbTypPokoju.getSelectedItem().toString());
+				
+				int index = tableWyniki.getSelectedRow();
+				if(index == -1){
+					if(tableWyniki.getRowCount() == 1) {
+						
+						index = 0;
+						
+					} else {
+					JOptionPane.showMessageDialog(new JFrame(), "Proszę wybrać pokój z listy..", "Bład wyboru pokoju",
+					        JOptionPane.ERROR_MESSAGE);	
+					return;
+					}
+				}
+				
+				parent.setTypPokoju(tableWyniki.getValueAt(index, 1).toString());
+				parent.setNrPokoju(tableWyniki.getValueAt(index, 0).toString());
 				
 				switch(parent.getState()) {
 				

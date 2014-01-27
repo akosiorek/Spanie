@@ -111,14 +111,9 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		zrobHotelSpanie();
-		frmHotelSpanie.getContentPane().setLayout(null);
-		
-		zadaniaPanel = new ZadniaPanel(this);
-		zadaniaPanel.setBounds(10, 180, 250, 349);
-		zadaniaPanel.setBorder(BorderFactory.createTitledBorder("Zadania"));
+		frmHotelSpanie.getContentPane().setLayout(null);		
 		
 		
-		frmHotelSpanie.getContentPane().add(zadaniaPanel);
 		
 		zakladkiPanel = new JPanel();
 		zakladkiPanel.setBounds(41, 13, 370, 136);
@@ -208,6 +203,11 @@ public class MainWindow {
 		
 		widokPanel = new WidokPanel(this);
 		widokPanel.setBounds(266, 180, 782, 572);
+		
+		zadaniaPanel = new ZadniaPanel(this);
+		zadaniaPanel.setBounds(10, 180, 250, 349);
+		zadaniaPanel.setBorder(BorderFactory.createTitledBorder("Zadania"));
+		frmHotelSpanie.getContentPane().add(zadaniaPanel);
 		
 		btnZaloguj = new JButton("Zaloguj");
 		btnZaloguj.addActionListener(new ActionListener() {

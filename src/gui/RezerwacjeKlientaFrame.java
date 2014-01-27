@@ -106,7 +106,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 		btnNowyPobyt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				parent.show(Okno.POBYT);
+				parent.show(Okno.POKOJE);
 			}
 		});
 		btnNowyPobyt.setBounds(56, 230, 100, 27);
@@ -127,18 +127,12 @@ public class RezerwacjeKlientaFrame extends JFrame {
 	}
 	
 	private void showResults() {
-		 parent.getNumerDokumentu();
 		String query = "select * from REZERWACJA where nr_dokumentu_klienta = '" 
 				+ parent.getNumerDokumentu() + "';";
 		
 		db.establishConnection();
 		ResultSet rs = db.executeQuery(query);
 		try {
-			if(!rs.next()) {
-				if(this.isVisible())
-					parent.show(Okno.POBYT);
-			}
-			rs.previous();
 			table.setModel(new ResultSetTableModel(rs));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -146,5 +140,4 @@ public class RezerwacjeKlientaFrame extends JFrame {
 		}
 		db.closeConnection();
 	}
-
 }

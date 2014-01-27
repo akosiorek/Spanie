@@ -34,6 +34,8 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 	public ZadniaPanel(MainWindow _parent) {
 		super(_parent);
 		
+		pobytManager.setParent(parent);
+		
 		zrobZwyklePanel();
 		zrobAdminPanel();
 		
