@@ -221,6 +221,7 @@ public class PobytManager {
 
 	public void setNrPokoju(String nrPokoju) {
 		this.nrPokoju = nrPokoju;
+		znajdzRezerwacje();
 	}	
 	
 	public String getCenaPokoju() {
@@ -351,7 +352,7 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 	
 	public void dodajRezerwacje() {
 		
-		
+		//TODO zaimplementuj
 	}
 	
 	private String dateToString(Date date) {
@@ -369,13 +370,36 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 		//TODO zaimplementuj
 	}
 	
-	public void znajdzPobytu() {
+	public boolean znajdzPobytu() {
 		
-		//TODO zaimplementuj - znajdź istniejący pobyt;
+		String pokojQuery = "select nr_pokoju, cena_pokoju from REZERWACJA_POKOJE where nr_pobytu = "  + nrRezerwacji + ";";
+		
+		db.establishConnection();
+		try {
+			ResultSet rs =  db.executeQuery(pokojQuery);
+			if(rs.next()) {
+				nrPokoju = rs.getString(1);
+				cenaPokoju = rs.getString(2);		
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		db.closeConnection();
+		
+		//Rezerwacja nie ma uslug dodatkowych
+//		rezerwacjaPanel.notifyDodanieUslugi();
+		return true;
 	}
 	
-	public void znajdzRezerwacje() {
+	public boolean znajdzRezerwacje() {
 		
-		//TODO zaimplementuj - znajdź istniającą rezerwację;
+		//TODO zaimplementuj - znajdź rezerwacje
+		return true;
+	}
+	
+	public void przeksztalcRezerwacjeWPobyt() {
+		
+		//TODO zaimplementuj
 	}
 }

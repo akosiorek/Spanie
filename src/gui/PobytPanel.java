@@ -55,7 +55,7 @@ public class PobytPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnZakonczPobyt.setBounds(139, 136, 125, 27);
+		btnZakonczPobyt.setBounds(137, 53, 125, 27);
 		
 		add(btnZakonczPobyt);
 		btnDodajUsugeDodatkowa.addActionListener(new ActionListener() {
@@ -63,7 +63,7 @@ public class PobytPanel extends JPanel {
 				parent.show(Okno.USLUGA_DODATKOWA);
 			}
 		});
-		btnDodajUsugeDodatkowa.setBounds(276, 136, 183, 27);
+		btnDodajUsugeDodatkowa.setBounds(274, 53, 183, 27);
 		
 		add(btnDodajUsugeDodatkowa);
 		btnUsunPobyt.addActionListener(new ActionListener() {
@@ -73,13 +73,13 @@ public class PobytPanel extends JPanel {
 				parent.hidePanel();
 			}
 		});
-		btnUsunPobyt.setBounds(471, 136, 100, 27);
+		btnUsunPobyt.setBounds(469, 53, 100, 27);
 		
 		add(btnUsunPobyt);
 		
 		
 		panelScrollPane = new JScrollPane(panel);
-		panelScrollPane.setBounds(139, 175, 432, 200);
+		panelScrollPane.setBounds(137, 92, 432, 200);
 		add(panelScrollPane);
 		panel.setLayout(null);
 		panelScrollPane.setBorder(BorderFactory.createTitledBorder("Szczegóły"));
@@ -104,10 +104,10 @@ public class PobytPanel extends JPanel {
 		lblCena.setBounds(cenaX, 60, 60, 15);
 		
 		panel.add(lblCena);
-		lblCenaPobytu.setBounds(149, 387, 100, 15);
+		lblCenaPobytu.setBounds(147, 304, 100, 15);
 		
 		add(lblCenaPobytu);
-		lblCenaZaPobyt.setBounds(261, 387, 60, 15);
+		lblCenaZaPobyt.setBounds(259, 304, 60, 15);
 		
 		add(lblCenaZaPobyt);
 		

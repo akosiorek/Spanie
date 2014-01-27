@@ -205,7 +205,7 @@ public class MainWindow {
 		widokPanel.setBounds(266, 180, 782, 572);
 		
 		zadaniaPanel = new ZadniaPanel(this);
-		zadaniaPanel.setBounds(10, 180, 250, 349);
+		zadaniaPanel.setBounds(10, 180, 250, 421);
 		zadaniaPanel.setBorder(BorderFactory.createTitledBorder("Zadania"));
 		frmHotelSpanie.getContentPane().add(zadaniaPanel);
 		

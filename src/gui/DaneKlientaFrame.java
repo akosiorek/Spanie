@@ -252,8 +252,7 @@ public class DaneKlientaFrame extends JFrame {
 					parent.show(Okno.REZERWACJA_KLIENTA);
 					break;
 					
-				case NOWY_POBYT: 
-					
+				case NOWY_POBYT: 					
 					if(checkIfRezerwacja())
 						parent.show(Okno.REZERWACJA_KLIENTA);
 					else
@@ -261,7 +260,11 @@ public class DaneKlientaFrame extends JFrame {
 					break;
 				
 				case ISTNIEJACY_POBYT: 
-					parent.znajdzPobytu();
+					if(!parent.znajdzPobytu()) {
+						JOptionPane.showMessageDialog(new JFrame(), "Nie znaleziono pobytu wskazanego klienta.", "Nie ma takiego pobytu",
+						        JOptionPane.ERROR_MESSAGE);							
+						return;
+					}
 					parent.show(Okno.POBYT); 
 					break;
 				
@@ -293,7 +296,7 @@ public class DaneKlientaFrame extends JFrame {
 			rs.next();
 			if(rs.getString(1).equals("tak")) {
 				
-				JOptionPane.showMessageDialog(new JFrame(), "Klienta jest dłużnikiem!.", "Dłużnik",
+				JOptionPane.showMessageDialog(new JFrame(), "Klienta jest dłużnikiem!", "Dłużnik",
 				        JOptionPane.WARNING_MESSAGE);
 			}
 		} catch (SQLException e) {

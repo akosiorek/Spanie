@@ -61,7 +61,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 	public RezerwacjeKlientaFrame() {
 		setTitle("Rezerwacje klienta");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 650, 275);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -70,7 +70,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.WIDTH);
 		JScrollPane tableScrollPane = new JScrollPane(table);
-		tableScrollPane.setBounds(56, 33, 288, 152);
+		tableScrollPane.setBounds(56, 33, 546, 152);
 		contentPane.add(tableScrollPane);
 		
 		btnWybierz = new JButton("Wybierz");
@@ -89,7 +89,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 				parent.show(Okno.REZERWACJA);
 			}
 		});
-		btnWybierz.setBounds(168, 230, 100, 27);
+		btnWybierz.setBounds(390, 199, 100, 27);
 		contentPane.add(btnWybierz);
 		
 		btnWstecz = new JButton("Wstecz");
@@ -99,7 +99,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 				setVisible(false);
 			}
 		});
-		btnWstecz.setBounds(280, 230, 100, 27);
+		btnWstecz.setBounds(502, 199, 100, 27);
 		contentPane.add(btnWstecz);
 		
 		btnNowyPobyt = new JButton("Nowy pobyt");
@@ -109,7 +109,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 				parent.show(Okno.POKOJE);
 			}
 		});
-		btnNowyPobyt.setBounds(56, 230, 100, 27);
+		btnNowyPobyt.setBounds(278, 199, 100, 27);
 		contentPane.add(btnNowyPobyt);
 		
 		
@@ -139,5 +139,16 @@ public class RezerwacjeKlientaFrame extends JFrame {
 			e.printStackTrace();
 		}
 		db.closeConnection();
+		
+		if(table.getRowCount() != 0) {
+			table.getColumnModel().getColumn(0).setMinWidth(80);
+			table.getColumnModel().getColumn(0).setMaxWidth(80);
+			table.getColumnModel().getColumn(2).setMinWidth(120);
+			table.getColumnModel().getColumn(2).setMaxWidth(120);
+			table.getColumnModel().getColumn(3).setMinWidth(120);
+			table.getColumnModel().getColumn(3).setMaxWidth(120);
+			table.getColumnModel().getColumn(4).setMinWidth(50);
+			table.getColumnModel().getColumn(4).setMaxWidth(50);
+		}
 	}
 }

@@ -76,14 +76,16 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 				}
 			}
 		});
-		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnIstniejcyPobyt, 24, SpringLayout.NORTH, zwyklePanel);
-		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnIstniejcyPobyt, 89, SpringLayout.WEST, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnIstniejcyPobyt, 75, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnIstniejcyPobyt, 12, SpringLayout.WEST, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnIstniejcyPobyt, 120, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.EAST, btnIstniejcyPobyt, 214, SpringLayout.WEST, zwyklePanel);
 		zwyklePanel.add(btnIstniejcyPobyt);
 		
 		btnNowaRezerwacja = new JButton("Nowa rezerwacja");
-		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnNowaRezerwacja, 75, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnNowaRezerwacja, 135, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnNowaRezerwacja, 12, SpringLayout.WEST, zwyklePanel);
-		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnNowaRezerwacja, 120, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnNowaRezerwacja, 180, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.EAST, btnNowaRezerwacja, 214, SpringLayout.WEST, zwyklePanel);
 		btnNowaRezerwacja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -96,9 +98,9 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		zwyklePanel.add(btnNowaRezerwacja);
 		
 		btnIstniejcaRezerwacja = new JButton("Istniejąca rezerwacja");
-		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnIstniejcaRezerwacja, 135, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnIstniejcaRezerwacja, 195, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnIstniejcaRezerwacja, 12, SpringLayout.WEST, zwyklePanel);
-		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnIstniejcaRezerwacja, 179, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnIstniejcaRezerwacja, 240, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.EAST, btnIstniejcaRezerwacja, 214, SpringLayout.WEST, zwyklePanel);
 		btnIstniejcaRezerwacja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,9 +113,9 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		zwyklePanel.add(btnIstniejcaRezerwacja);
 		
 		btnAktualizujCennik = new JButton("Aktualizuj cennik");
-		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnAktualizujCennik, 194, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnAktualizujCennik, 255, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnAktualizujCennik, 12, SpringLayout.WEST, zwyklePanel);
-		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnAktualizujCennik, 238, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnAktualizujCennik, 300, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.EAST, btnAktualizujCennik, 214, SpringLayout.WEST, zwyklePanel);
 		btnAktualizujCennik.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
@@ -125,9 +127,9 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		zwyklePanel.add(btnAktualizujCennik);
 		
 		btnSezony = new JButton("Zarządzaj sezonami");
-		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnSezony, 253, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.NORTH, btnSezony, 315, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.WEST, btnSezony, 12, SpringLayout.WEST, zwyklePanel);
-		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnSezony, 298, SpringLayout.NORTH, zwyklePanel);
+		sl_zwyklePanel.putConstraint(SpringLayout.SOUTH, btnSezony, 360, SpringLayout.NORTH, zwyklePanel);
 		sl_zwyklePanel.putConstraint(SpringLayout.EAST, btnSezony, 214, SpringLayout.WEST, zwyklePanel);
 		btnSezony.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -169,7 +171,7 @@ public class ZadniaPanel extends CardPanel<MainWindow> {
 		//	btnUzytkownicy
 		sl_adminPanel.putConstraint(SpringLayout.NORTH, btnRaport3, 135, SpringLayout.NORTH, adminPanel);
 		sl_adminPanel.putConstraint(SpringLayout.WEST, btnRaport3, 12, SpringLayout.WEST, adminPanel);
-		sl_adminPanel.putConstraint(SpringLayout.SOUTH, btnRaport3, 179, SpringLayout.NORTH, adminPanel);
+		sl_adminPanel.putConstraint(SpringLayout.SOUTH, btnRaport3, 180, SpringLayout.NORTH, adminPanel);
 		sl_adminPanel.putConstraint(SpringLayout.EAST, btnRaport3, 214, SpringLayout.WEST, adminPanel);
 
 	
