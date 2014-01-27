@@ -123,7 +123,7 @@ public class UslugaDodatkowaFrame extends JFrame {
 						parent.getUslugiDodatkowe().add(nazwa);
 						parent.getCenyUslugDodatkowych().add(cena);
 					}
-					parent.notifyDodanieUslugi();
+					parent.notifyDodanieUslugi(datePickerOd.getDate(), datePickerDo.getDate());
 					setVisible(false);
 				} else {
 					

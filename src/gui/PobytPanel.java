@@ -19,7 +19,7 @@ import java.util.List;
 public class PobytPanel extends JPanel {
 	private final JButton btnZakonczPobyt = new JButton("Zakończ pobyt");
 	private final JButton btnDodajUsugeDodatkowa = new JButton("Dodaj usługę dodatkową");
-	private final JButton btnUsuPobyt = new JButton("Usuń pobyt");
+	private final JButton btnUsunPobyt = new JButton("Usuń pobyt");
 	private final JPanel panel = new JPanel();
 	private final JScrollPane panelScrollPane;
 	private final JLabel lblKlient = new JLabel("Klient:");
@@ -41,6 +41,8 @@ public class PobytPanel extends JPanel {
 	private final static int first = 87;
 	private final JLabel lblNazwa = new JLabel("Nazwa:");
 	private final JLabel lblCena = new JLabel("Cena:");
+	private final JLabel lblCenaPobytu = new JLabel("Cena pobytu:");
+	private final JLabel lblCenaZaPobyt = new JLabel("");
 	
 	/**
 	 * Create the panel.
@@ -64,13 +66,16 @@ public class PobytPanel extends JPanel {
 		btnDodajUsugeDodatkowa.setBounds(276, 136, 183, 27);
 		
 		add(btnDodajUsugeDodatkowa);
-		btnUsuPobyt.addActionListener(new ActionListener() {
+		btnUsunPobyt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				parent.usunPobyt();
+				parent.hidePanel();
 			}
 		});
-		btnUsuPobyt.setBounds(471, 136, 100, 27);
+		btnUsunPobyt.setBounds(471, 136, 100, 27);
 		
-		add(btnUsuPobyt);
+		add(btnUsunPobyt);
 		
 		
 		panelScrollPane = new JScrollPane(panel);
@@ -99,6 +104,12 @@ public class PobytPanel extends JPanel {
 		lblCena.setBounds(cenaX, 60, 60, 15);
 		
 		panel.add(lblCena);
+		lblCenaPobytu.setBounds(149, 387, 100, 15);
+		
+		add(lblCenaPobytu);
+		lblCenaZaPobyt.setBounds(261, 387, 60, 15);
+		
+		add(lblCenaZaPobyt);
 		
 		addComponentListener(new ComponentAdapter() {
 			public void componentHidden(ComponentEvent e) 
@@ -138,6 +149,7 @@ public class PobytPanel extends JPanel {
 			panel.setPreferredSize(new Dimension(panel.getWidth() - 20, first + i * interval + height));
 //			System.out.println("Added " + nazwa.getText() + " - " + cena.getText());
 		}
+		lblCenaZaPobyt.setText(parent.getCenaPobytu() + " zł");
 		panel.revalidate();
 		panelScrollPane.revalidate();
 		repaint();

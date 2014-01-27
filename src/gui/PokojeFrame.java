@@ -144,8 +144,10 @@ public class PokojeFrame extends JFrame {
 				switch(parent.getState()) {
 				
 				case NOWA_REZERWACJA: 
+					parent.dodajRezerwacje();
 					parent.show(Okno.REZERWACJA); break;
 				case NOWY_POBYT: 
+					parent.dodajPobyt();
 					parent.show(Okno.POBYT); break;
 				}
 			}

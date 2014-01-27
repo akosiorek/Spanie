@@ -261,6 +261,7 @@ public class DaneKlientaFrame extends JFrame {
 					break;
 				
 				case ISTNIEJACY_POBYT: 
+					parent.znajdzPobytu();
 					parent.show(Okno.POBYT); 
 					break;
 				

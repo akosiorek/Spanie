@@ -1,8 +1,12 @@
 package gui;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import dao.dbDAO;
 
 public class PobytManager {
 	
@@ -10,6 +14,7 @@ public class PobytManager {
 	private RezerwacjeKlientaFrame rezerwacjeKlientaFrame = new RezerwacjeKlientaFrame();
 	private PokojeFrame pokojeFrame = new PokojeFrame();
 	private PobytPanel pobytPanel = new PobytPanel();
+	private RezerwacjaPanel rezerwacjaPanel = new RezerwacjaPanel();
 	private UslugaDodatkowaFrame uslugaDodatkowaFrame = new UslugaDodatkowaFrame();
 	
 	
@@ -19,38 +24,28 @@ public class PobytManager {
 	private String numerDokumentu= "";
 	private String typPokoju= "";
 	private String nrPokoju = "";
-	public String getNrPokoju() {
-		return nrPokoju;
-	}
+	private String nrPobytu = "";
+	private String cenaPobytu = "0";
 
-	public void setNrPokoju(String nrPokoju) {
-		this.nrPokoju = nrPokoju;
-	}
-
-	private String cenaPokoju = "";
-	
-	public String getCenaPokoju() {
-		return cenaPokoju;
-	}
-
-	public void setCenaPokoju(String cenaPokoju) {
-		this.cenaPokoju = cenaPokoju;
-	}
-
+	// TODO zrobić dodawanie ceny
+	private String cenaPokoju = "15"; 
 	private Date dataOd= new Date();
 	private Date dataDo= new Date();
 	private String nrRezerwacji= "";
 	private List<String> uslugiDodatkowe = new ArrayList<String>();
 	private List<String> cenyUslugDodatkowych = new ArrayList<String>();
-	
+
+	private dbDAO db = new dbDAO();
 	private MainWindow parent;
 	
 	public static final String POBYT_PANEL = "POBYT_PANEL";
+	public static final String REZERWACJA_PANEL = "REZERWACJA_PANEL";
 	
 	public void setParent(MainWindow parent) {
 		
 		this.parent = parent;
 		parent.widokPanel.addPanel(pobytPanel, POBYT_PANEL);
+		parent.widokPanel.addPanel(rezerwacjaPanel, REZERWACJA_PANEL);
 	}
 	
 	public PobytManager() {
@@ -105,6 +100,14 @@ public class PobytManager {
 
 	public void setTypPokoju(String typPokoju) {
 		this.typPokoju = typPokoju;
+	}
+	
+	public String getCenaPobytu() {
+		return cenaPobytu;
+	}
+
+	public void setCenaPobytu(String cenaPobytu) {
+		this.cenaPobytu = cenaPobytu;
 	}
 
 	public enum Stan {
@@ -212,10 +215,167 @@ public class PobytManager {
 		this.dataDo = dataDo;
 	}
 	
-public void notifyDodanieUslugi() {
+	public String getNrPokoju() {
+		return nrPokoju;
+	}
+
+	public void setNrPokoju(String nrPokoju) {
+		this.nrPokoju = nrPokoju;
+	}	
+	
+	public String getCenaPokoju() {
+		return cenaPokoju;
+	}
+
+	public void setCenaPokoju(String cenaPokoju) {
+		this.cenaPokoju = cenaPokoju;
+	}
+	
+public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
+	
+	db.establishConnection();		
+	String nowaUslugaDodatkowaQuery = "insert into POBYT_USLUGA_DODATKOWA values ("
+			+ nrPobytu + ", '"
+			+ uslugiDodatkowe.get(uslugiDodatkowe.size() - 1) + "', '"
+			+ dateToString(dataOd) + "', '"
+			+ dateToString(dataDo) + "', "
+			+ cenyUslugDodatkowych.get(cenyUslugDodatkowych.size() - 1) + ");";
+	
+	if(-1 == db.executeUpdate(nowaUslugaDodatkowaQuery)) {
 		
-	pobytPanel.notifyDodanieUslugi();	
+		System.err.println("NowyUslugaDodatkowaQuery failed");
+	}
 	
+	db.closeConnection();
+	updateCenaPobytu();
+	pobytPanel.notifyDodanieUslugi();
+}
+
+	private final static String najNumerPobytuQuery = "select nr_pobytu + 1 from POBYT where nr_pobytu >= ALL(select nr_pobytu from POBYT);";
+
+	public void dodajPobyt() {
+		try {
+			
+		db.establishConnection();
+		ResultSet rs = db.executeQuery(najNumerPobytuQuery);
+		rs.next();
+		nrPobytu = rs.getString(1);
+		
+		String dataOd = dateToString(this.dataOd);
+		String dataDo = dateToString(this.dataDo);
+		
+		String nowyPobytQuery = "insert into POBYT values ("
+				+ nrPobytu + ", '"
+				+ numerDokumentu + "', '"
+				+ dataOd + "', '"
+				+ dataDo + "', "
+				+ "0);";
+		
+		String nowyPokojPobytQuery = "insert into POBYT_POKOJE values ("
+				+ nrPobytu + ", " + nrPokoju + ", " + cenaPokoju + ");"; 
+		
+		String zajmijPokojQuery = "update POKOJE set stan = 'zajety' where nr_pokoju = " + nrPokoju + ";";
+		
+		
+		if(db.executeUpdate(nowyPobytQuery) == -1)
+			System.err.println("NowyPobytQuery failed");
+		
+		if(db.executeUpdate(zajmijPokojQuery) == -1)			
+			System.err.println("ZajmijPokojQuery failed");
+		
+		if(db.executeUpdate(nowyPokojPobytQuery) == -1)			
+			System.err.println("NowyPokojPobytQuery failed");
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			db.closeConnection();
+		}		
+	}
 	
+	public void usunPobyt() {
+		
+		db.establishConnection();
+		
+		String usunPobytQuery = "delete from POBYT where nr_pobytu = " + nrPobytu + ";";
+		String usunUslugeDodatkowaQuery = "delete from POBYT_USLUGA_DODATKOWA where nr_pobytu = " + nrPobytu + " and nazwa_uslugi = '";
+		String usunPokojQuery = "delete from POBYT_POKOJE where nr_pobytu = " + nrPobytu + " and nr_pokoju = " + nrPokoju + ";";
+		String zwolnijPokojQuery = "update POKOJE set stan = 'wolny' where nr_pokoju = " + nrPokoju + ";";
+				
+		for(final String nazwa : uslugiDodatkowe) {			
+			if(db.executeUpdate(usunUslugeDodatkowaQuery + nazwa + "';") == -1) {
+				System.err.println("usunUsluge failed at " + nazwa);
+			}
+		}
+		if(-1 == db.executeUpdate(usunPokojQuery))
+			System.err.println("UsunPokojQuery failed");
+		
+		if(-1 == db.executeUpdate(zwolnijPokojQuery))
+			System.err.println("ZwolnijPokojQuery failed");
+		
+		if(-1 == db.executeUpdate(usunPobytQuery))
+			System.err.println("UsunPobytQuery failed");		
+	}
+	
+	public void zakonczPobyt() {
+		
+		String dodajDoHistoriiQuery = "INSERT INTO HISTORIA_POBYTOW (nr_pobytu, nr_dokumentu_klienta, "
+				+ "data_rozpoczecia, data_zakonczenia, nr_pokoju, cena_pokoju) select p.nr_pobytu, "
+				+ "nr_dokumentu_klienta, data_rozpoczecia, data_zakonczenia, nr_pokoju, " + cenaPobytu 
+				+ "  FROM POBYT p join POBYT_POKOJE pok on p.nr_pobytu = pok.nr_pobytu WHERE p.nr_pobytu = "
+				+ nrPobytu + ";";
+		
+		
+		String usunPokojQuery = "delete from POBYT_POKOJE where nr_pobytu = " + nrPobytu + ";";
+		String deleteUslugaDodatkowaQuery = "delete from POBYT_USLUGA_DODATKOWA where nr_pobytu = " + nrPobytu + ";";
+		String deletePobytQuery = "delete from POBYT where nr_pobytu = " + nrPobytu + ";";
+		
+		db.establishConnection();
+		
+		if(-1 == db.executeUpdate(dodajDoHistoriiQuery))
+			System.err.println("dodajDoHistoriiQuery failed");
+		
+		if(-1 == db.executeUpdate(usunPokojQuery))
+			System.err.println("usunPokojQuery failed");
+		
+		if(-1 == db.executeUpdate(deleteUslugaDodatkowaQuery))
+			System.err.println("deleteUslugaDodatkowaQuery failed");
+		
+		if(-1 == db.executeUpdate(deletePobytQuery))
+			System.err.println("deletePobytQuery failed");
+		
+		db.closeConnection();
+	}
+	
+	public void dodajRezerwacje() {
+		
+		
+	}
+	
+	private String dateToString(Date date) {
+		
+		return new java.sql.Date(date.getTime()).toString();
+	}
+	
+	public void hidePanel() {
+		
+		parent.widokPanel.wyswietl(WidokPanel.EMPTY);
+	}
+	
+	private void updateCenaPobytu() {
+		
+		//TODO zaimplementuj
+	}
+	
+	public void znajdzPobytu() {
+		
+		//TODO zaimplementuj - znajdź istniejący pobyt;
+	}
+	
+	public void znajdzRezerwacje() {
+		
+		//TODO zaimplementuj - znajdź istniającą rezerwację;
 	}
 }
