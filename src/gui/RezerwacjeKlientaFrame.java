@@ -81,7 +81,7 @@ public class RezerwacjeKlientaFrame extends JFrame {
 				if(i == -1) {
 					if(table.getRowCount() == 1) {
 						
-						parent.setNrRezerwacji(table.getModel().getValueAt(0, 0).toString());
+						i = 0;				
 						
 					} else {
 					
@@ -92,6 +92,8 @@ public class RezerwacjeKlientaFrame extends JFrame {
 				} else {
 				
 					parent.setNrRezerwacji(table.getModel().getValueAt(i, 0).toString());
+					parent.setDataDo(Utils.parseDate(table.getModel().getValueAt(i, 3).toString()));
+					parent.setDataOd(Utils.parseDate(table.getModel().getValueAt(i, 2).toString()));
 				}
 				parent.znajdzRezerwacje();
 				parent.show(Okno.REZERWACJA);

@@ -95,6 +95,10 @@ public class ResultSetTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return cells.get(rowIndex).get(columnIndex);
     }
+    
+    public void setValueAt(Object object, int rowIndex, int columnIndex) {
+       cells.get(rowIndex).set(columnIndex, object);
+    }
 
     @Override
     public String getColumnName(int columnIndex) {

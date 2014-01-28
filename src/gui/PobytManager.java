@@ -41,6 +41,9 @@ public class PobytManager {
 	public static final String POBYT_PANEL = "POBYT_PANEL";
 	public static final String REZERWACJA_PANEL = "REZERWACJA_PANEL";
 	
+	private final static String najNumerPobytuQuery = "select nr_pobytu + 1 from POBYT where nr_pobytu >= ALL(select nr_pobytu from POBYT);";
+	private final static String najNumerRezerwacjiQuery = "select nr_rezerwacji + 1 from REZERWACJA where nr_rezerwacji >= ALL(select nr_rezerwacji from REZERWACJA);";
+	
 	public void setParent(MainWindow parent) {
 		
 		this.parent = parent;
@@ -238,8 +241,8 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 	String nowaUslugaDodatkowaQuery = "insert into POBYT_USLUGA_DODATKOWA values ("
 			+ nrPobytu + ", '"
 			+ uslugiDodatkowe.get(uslugiDodatkowe.size() - 1) + "', '"
-			+ dateToString(dataOd) + "', '"
-			+ dateToString(dataDo) + "', "
+			+ Utils.dateToString(dataOd) + "', '"
+			+ Utils.dateToString(dataDo) + "', "
 			+ cenyUslugDodatkowych.get(cenyUslugDodatkowych.size() - 1) + ");";
 	
 	if(-1 == db.executeUpdate(nowaUslugaDodatkowaQuery)) {
@@ -252,18 +255,30 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 	pobytPanel.notifyDodanieUslugi();
 }
 
-	private final static String najNumerPobytuQuery = "select nr_pobytu + 1 from POBYT where nr_pobytu >= ALL(select nr_pobytu from POBYT);";
-
-	public void dodajPobyt() {
-		try {
-			
+	private String genNumer(String query) {
+		
+		String str = null;
 		db.establishConnection();
 		ResultSet rs = db.executeQuery(najNumerPobytuQuery);
-		rs.next();
-		nrPobytu = rs.getString(1);
+		try {
+			rs.next();
+			str = rs.getString(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		db.closeConnection();
+		return str;
+	}
+
+
+	public void dodajPobyt() {
+			
+		db.establishConnection();
+		nrPobytu = genNumer(najNumerPobytuQuery);
 		
-		String dataOd = dateToString(this.dataOd);
-		String dataDo = dateToString(this.dataDo);
+		String dataOd = Utils.dateToString(this.dataOd);
+		String dataDo = Utils.dateToString(this.dataDo);
 		
 		String nowyPobytQuery = "insert into POBYT values ("
 				+ nrPobytu + ", '"
@@ -272,11 +287,8 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 				+ dataDo + "', "
 				+ "0);";
 		
-		String nowyPokojPobytQuery = "insert into POBYT_POKOJE values ("
-				+ nrPobytu + ", " + nrPokoju + ", " + cenaPokoju + ");"; 
-		
-		String zajmijPokojQuery = "update POKOJE set stan = 'zajety' where nr_pokoju = " + nrPokoju + ";";
-		
+		String nowyPokojPobytQuery = "insert into POBYT_POKOJE values (" + nrPobytu + ", " + nrPokoju + ", " + cenaPokoju + ");"; 		
+		String zajmijPokojQuery = "update POKOJE set stan = 'zajety' where nr_pokoju = " + nrPokoju + ";";		
 		
 		if(db.executeUpdate(nowyPobytQuery) == -1)
 			System.err.println("NowyPobytQuery failed");
@@ -285,15 +297,10 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 			System.err.println("ZajmijPokojQuery failed");
 		
 		if(db.executeUpdate(nowyPokojPobytQuery) == -1)			
-			System.err.println("NowyPokojPobytQuery failed");
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			
+			System.err.println("NowyPokojPobytQuery failed");			
+
 			db.closeConnection();
-		}		
+	
 	}
 	
 	public void usunPobyt() {
@@ -348,11 +355,6 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 			System.err.println("deletePobytQuery failed");
 		
 		db.closeConnection();
-	}
-	
-	private String dateToString(Date date) {
-		
-		return new java.sql.Date(date.getTime()).toString();
 	}
 	
 	public void hidePanel() {
@@ -499,19 +501,33 @@ private void updateCenaRezerwacji() {
 			System.err.println("UsunPokojQuery failed");	
 		
 		if(-1 == db.executeUpdate(usunPobytQuery))
-			System.err.println("UsunPobytQuery failed");		
+			System.err.println("UsunRezerwacjeQuery failed");		
 	}
 	
 	public void przeksztalcRezerwacjeWPobyt() {
 		
-		//TODO
-		//Znaleźć daty oraniczające daną rezerwację
-		//wywołać dodajPobyt();
-		//wywołać anulujRezerwacje();
+		dodajPobyt();
+		anulujRezerwacje();
 	}
 	
 	public void dodajRezerwacje() {
 		
-		//TODO zaimplementuj
+		nrRezerwacji = genNumer(najNumerRezerwacjiQuery);		
+		String nowaRezerwacjaQuery = "insert into REZERWACJA values ("
+				+ nrRezerwacji + ", '"
+				+ numerDokumentu + "', '"
+				+ Utils.dateToString(this.dataOd) + "', '"
+				+ Utils.dateToString(this.dataDo) + "', "
+				+ "0);";
+		
+		String nowyPokojRezerwacjaQuery = "insert into REZERWACJA_POKOJE values (" + nrRezerwacji + ", " + nrPokoju + ", " + cenaPokoju + ");"; 		
+		
+		if(db.executeUpdate(nowaRezerwacjaQuery) == -1)
+			System.err.println("NowaRezerwacjatQuery failed");
+		
+		if(db.executeUpdate(nowyPokojRezerwacjaQuery) == -1)			
+			System.err.println("NowyPokojRezerwacjaQuery failed");			
+
+			db.closeConnection();
 	}
 }

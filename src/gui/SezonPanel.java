@@ -22,8 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
 
@@ -164,8 +162,8 @@ public class SezonPanel extends JPanel {
 					try {
 						rs.next();
 						
-						dateOd = parseDate(rs.getString(1));
-						dateDo = parseDate(rs.getString(2));
+						dateOd = Utils.parseDate(rs.getString(1));
+						dateDo = Utils.parseDate(rs.getString(2));
 						
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -185,18 +183,4 @@ public class SezonPanel extends JPanel {
 		});
 		
 	}
-	
-	private java.util.Date parseDate(String someDate) {
-		
-		DateFormat df = new SimpleDateFormat("yyyy-dd-kk", Locale.ENGLISH);
-		java.util.Date result = null;
-	    try {
-			 result =  df.parse(someDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} 
-	    
-	    return result;
-	}
-
 }

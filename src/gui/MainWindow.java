@@ -111,7 +111,7 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		zrobHotelSpanie();
-		frmHotelSpanie.getContentPane().setLayout(null);		
+		frmHotelSpanie.getContentPane().setLayout(null);
 		
 		
 		

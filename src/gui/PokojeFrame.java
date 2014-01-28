@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -140,6 +141,7 @@ public class PokojeFrame extends JFrame {
 				
 				parent.setTypPokoju(tableWyniki.getValueAt(index, 1).toString());
 				parent.setNrPokoju(tableWyniki.getValueAt(index, 0).toString());
+				parent.setCenaPokoju(tableWyniki.getValueAt(index, 2).toString());
 				
 				switch(parent.getState()) {
 				
@@ -179,23 +181,26 @@ public class PokojeFrame extends JFrame {
 	
 	private void showResults() {
 		
-		String query = "select  POKOJE.nr_pokoju, rodzaj_pokoju from "
+		String query = "select a.nr_pokoju, a.rodzaj_pokoju, tp.cena_pokoju from (select  POKOJE.nr_pokoju, rodzaj_pokoju from "
 				+ "POKOJE where POKOJE.nr_pokoju not in(select POKOJE.nr_pokoju from POKOJE, REZERWACJA_POKOJE "
 				+ "left join REZERWACJA on REZERWACJA_POKOJE.nr_rezerwacji=REZERWACJA.nr_rezerwacji where "
 				+ "REZERWACJA_POKOJE.nr_pokoju = POKOJE.nr_pokoju and REZERWACJA.data_rozpoczecia < '"
-				+ new java.sql.Date(datePickerOd.getDate().getTime()).toString()
+				+ Utils.dateToString(datePickerOd.getDate())
 				+ "' and REZERWACJA.data_zakonczenia >= '"
-				+ new java.sql.Date(datePickerDo.getDate().getTime()).toString()
+				+ Utils.dateToString(datePickerDo.getDate())
 				+ "') and POKOJE.nr_pokoju not in(select POBYT_POKOJE.nr_pokoju from POKOJE,POBYT_POKOJE left "
 				+ "join POBYT on POBYT_POKOJE.nr_pobytu=POBYT.nr_pobytu where POBYT_POKOJE.nr_pokoju = "
 				+ "POKOJE.nr_pokoju and POBYT.data_rozpoczecia < '"
-				+ new java.sql.Date(datePickerOd.getDate().getTime()).toString()
+				+ Utils.dateToString(datePickerOd.getDate())
 				+ "' and POBYT.data_zakonczenia >= '"
-				+ new java.sql.Date(datePickerDo.getDate().getTime()).toString()
+				+ Utils.dateToString(datePickerDo.getDate())
 				+ "') and rodzaj_pokoju = '"
 				+ cmbTypPokoju.getSelectedItem().toString()
-				+ "';";
+				+ "') a join TYP_POKOJU tp on a.rodzaj_pokoju = tp.rodzaj_pokoju ;";
 		
+		
+		
+		System.out.println(query);
 		db.establishConnection();		
 		
 		try {
@@ -207,5 +212,37 @@ public class PokojeFrame extends JFrame {
 		
 		
 		db.closeConnection();
+		checkSeasons();
+	}
+	
+	private void checkSeasons() {
+		if(tableWyniki.getColumnCount() == 0) return;
+		
+		String checkSeasonsQuery = "select cena_pokoju from SEZON s join SEZON_TYP_POKOJU stp on s.nr_sezonu = "
+				+ "stp.nr_sezonu where s.data_rozpoczecia <= '"
+				+ Utils.dateToString(datePickerOd.getDate())
+				+ "' and s.data_zakonczenia >= '"
+				+ Utils.dateToString(datePickerDo.getDate())
+				+ "' and stp.rodzaj_pokoju = '"
+				+ cmbTypPokoju.getSelectedItem().toString()
+				+ "';";
+		
+		db.establishConnection();
+		ResultSet rs = db.executeQuery(checkSeasonsQuery);
+		try {
+			if(rs.next()) {
+				float nowaCena = rs.getFloat(1);
+				while(rs.next()) if(rs.getFloat(1) > nowaCena) nowaCena = rs.getFloat(1);		
+				final TableModel model = tableWyniki.getModel();
+				for(int i = 0; i < model.getRowCount(); ++i) {
+					
+					model.setValueAt(nowaCena, i, 2);
+					System.out.println(model.getValueAt(i, 2));
+				}				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
