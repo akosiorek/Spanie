@@ -118,8 +118,6 @@ public class UslugaDodatkowaFrame extends JFrame {
 							nazwa += " x " + Integer.toString(days + 1);
 						}
 						
-						parent.getCenyUslugDodatkowych().add(cena);
-						
 						parent.getUslugiDodatkowe().add(nazwa);
 						parent.getCenyUslugDodatkowych().add(cena);
 					}

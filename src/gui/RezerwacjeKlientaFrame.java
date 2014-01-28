@@ -79,13 +79,21 @@ public class RezerwacjeKlientaFrame extends JFrame {
 				
 				int i = table.getSelectedRow();
 				if(i == -1) {
+					if(table.getRowCount() == 1) {
+						
+						parent.setNrRezerwacji(table.getModel().getValueAt(0, 0).toString());
+						
+					} else {
 					
-					JOptionPane.showMessageDialog(new JFrame(), "Nie zaznaczono żadnej rezerwacji.", "Niepoprawna rezerwacja.",
-					        JOptionPane.WARNING_MESSAGE);
-					return;
-				}
+						JOptionPane.showMessageDialog(new JFrame(), "Nie zaznaczono żadnej rezerwacji.", "Niepoprawna rezerwacja.",
+						        JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+				} else {
 				
-				parent.setNrRezerwacji(table.getModel().getValueAt(i, 0).toString());
+					parent.setNrRezerwacji(table.getModel().getValueAt(i, 0).toString());
+				}
+				parent.znajdzRezerwacje();
 				parent.show(Okno.REZERWACJA);
 			}
 		});

@@ -260,7 +260,7 @@ public class DaneKlientaFrame extends JFrame {
 					break;
 				
 				case ISTNIEJACY_POBYT: 
-					if(!parent.znajdzPobytu()) {
+					if(!parent.znajdzPobyt()) {
 						JOptionPane.showMessageDialog(new JFrame(), "Nie znaleziono pobytu wskazanego klienta.", "Nie ma takiego pobytu",
 						        JOptionPane.ERROR_MESSAGE);							
 						return;

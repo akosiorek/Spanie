@@ -28,4 +28,4 @@ select sum(cena) + cena_pokoju from POBYT_USLUGA_DODATKOWA pob join POBYT_POKOJE
 select sum(cena_pokoju*(datediff(data_zakonczenia, data_rozpoczecia))) from POBYT pob right join POBYT_POKOJE pok on pob.nr_pobytu=pok.nr_pobytu where pob.nr_pobytu = 1;
 
 # cena za usługi dodatkowe w danym pobycie
-select sum(cena) from (select count(*) * (cena*(datediff(data_zakonczenia, data_rozpoczecia))) as cena from POBYT_USLUGA_DODATKOWA where nr_pobytu = 2 group by nazwa_uslugi,data_zakonczenia,data_rozpoczecia,cena) as s;
+select sum(cena) from (select (cena*(datediff(data_zakonczenia, data_rozpoczecia))) as cena from POBYT_USLUGA_DODATKOWA where nr_pobytu = 2 group by nazwa_uslugi,data_zakonczenia,data_rozpoczecia,cena) A;

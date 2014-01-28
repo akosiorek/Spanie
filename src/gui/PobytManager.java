@@ -54,6 +54,7 @@ public class PobytManager {
 		rezerwacjeKlientaFrame.setParent(this);
 		pokojeFrame.setParent(this);
 		pobytPanel.setParent(this);	
+		rezerwacjaPanel.setParent(this);	
 		
 		
 		uslugaDodatkowaFrame.setParent(this);
@@ -161,8 +162,8 @@ public class PobytManager {
 		case DANE_KLIENTA: daneKlientaFrame.setVisible(true); break;
 		case REZERWACJA_KLIENTA: rezerwacjeKlientaFrame.setVisible(true); break;
 		case POKOJE: pokojeFrame.setVisible(true); break;
-		case REZERWACJA: parent.widokPanel.wyswietl(POBYT_PANEL);break;
-		case POBYT: parent.widokPanel.wyswietl(POBYT_PANEL); break;
+		case REZERWACJA: rezerwacjaPanel.odswiez(); parent.widokPanel.wyswietl(REZERWACJA_PANEL);break;
+		case POBYT: pobytPanel.odswiez(); parent.widokPanel.wyswietl(POBYT_PANEL); break;
 		case USLUGA_DODATKOWA: uslugaDodatkowaFrame.setVisible(true); break;
 		}
 	}
@@ -221,7 +222,6 @@ public class PobytManager {
 
 	public void setNrPokoju(String nrPokoju) {
 		this.nrPokoju = nrPokoju;
-		znajdzRezerwacje();
 	}	
 	
 	public String getCenaPokoju() {
@@ -350,11 +350,6 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 		db.closeConnection();
 	}
 	
-	public void dodajRezerwacje() {
-		
-		//TODO zaimplementuj
-	}
-	
 	private String dateToString(Date date) {
 		
 		return new java.sql.Date(date.getTime()).toString();
@@ -367,12 +362,96 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 	
 	private void updateCenaPobytu() {
 		
-		//TODO zaimplementuj
+		
+		String cenaPokojuQuery = "select sum(cena_pokoju*(datediff(data_zakonczenia, data_rozpoczecia) + 1)) from POBYT pob "
+				+ "right join POBYT_POKOJE pok on pob.nr_pobytu=pok.nr_pobytu where pob.nr_pobytu = " + nrPobytu + ";";
+		
+		String cenaUslugQuery = "select sum(cena) from (select (cena*(datediff(data_zakonczenia, data_rozpoczecia) + 1 )) as "
+				+ "cena from POBYT_USLUGA_DODATKOWA where nr_pobytu = "
+				+ nrPobytu 
+				+ " group by nazwa_uslugi,data_zakonczenia,data_rozpoczecia,cena) A;";
+		
+		db.establishConnection();		
+		int cena1 = 0;
+		int cena2 = 0;
+		
+		try {
+			ResultSet rs = db.executeQuery(cenaPokojuQuery);
+			rs.next();
+			cena1 = rs.getInt(1);
+			if(rs.wasNull()) cena1 = 0;
+			
+			
+			rs = db.executeQuery(cenaUslugQuery);
+			rs.next();
+			cena2 = rs.getInt(1);
+			if(rs.wasNull()) cena2 = 0;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		db.closeConnection();
+		setCenaPobytu(Integer.toString(cena1 + cena2));
 	}
 	
-	public boolean znajdzPobytu() {
+private void updateCenaRezerwacji() {
 		
-		String pokojQuery = "select nr_pokoju, cena_pokoju from REZERWACJA_POKOJE where nr_pobytu = "  + nrRezerwacji + ";";
+		
+		String cenaPokojuQuery = "select sum(cena_pokoju*(datediff(data_zakonczenia, data_rozpoczecia) + 1)) from REZERWACJA pob "
+				+ "right join REZERWACJA_POKOJE pok on pob.nr_rezerwacji = pok.nr_rezerwacji where pob.nr_rezerwacji = " + nrRezerwacji + ";";
+		
+		db.establishConnection();		
+		int cena = 0;
+		
+		try {
+			ResultSet rs = db.executeQuery(cenaPokojuQuery);
+			rs.next();
+			cena = rs.getInt(1);
+			if(rs.wasNull()) cena = 0;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		db.closeConnection();
+		setCenaPobytu(Integer.toString(cena));
+	}
+	
+	public boolean znajdzPobyt() {
+		
+		String nrPobytuQuery = "select nr_pobytu from POBYT where nr_dokumentu_klienta = '" + numerDokumentu + "';";
+		
+		String pokojQuery = "select nr_pokoju, cena_pokoju from POBYT_POKOJE where nr_pobytu = ";  
+		
+		db.establishConnection();
+		try {
+			ResultSet rs =  db.executeQuery(nrPobytuQuery);
+			if(!rs.next()) return false;			
+			nrPobytu = rs.getString(1);
+			pokojQuery += nrPobytu + ";";
+			
+			
+			rs =  db.executeQuery(pokojQuery);
+			if(rs.next()) {
+				nrPokoju = rs.getString(1);
+				cenaPokoju = rs.getString(2);		
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		db.closeConnection();
+		
+		znajdzUslugiDodatkowePobytu();
+//		znajdzNumerPokojuPobyt();
+		updateCenaPobytu();
+		return true;
+	}
+	
+	public boolean znajdzRezerwacje() {
+		
+		String pokojQuery = "select nr_pokoju, cena_pokoju from REZERWACJA_POKOJE where nr_rezerwacji = " + nrRezerwacji + ";";  
 		
 		db.establishConnection();
 		try {
@@ -387,18 +466,51 @@ public void notifyDodanieUslugi(Date dataOd, Date dataDo) {
 		}
 		db.closeConnection();
 		
-		//Rezerwacja nie ma uslug dodatkowych
-//		rezerwacjaPanel.notifyDodanieUslugi();
+		updateCenaRezerwacji();
 		return true;
 	}
 	
-	public boolean znajdzRezerwacje() {
+	private void znajdzUslugiDodatkowePobytu() {
 		
-		//TODO zaimplementuj - znajdź rezerwacje
-		return true;
+		String znajdzUslugiQuery = "select nazwa_uslugi, cena from POBYT_USLUGA_DODATKOWA where nr_pobytu = " + nrPobytu + ";";
+		
+		db.establishConnection();
+		ResultSet rs = db.executeQuery(znajdzUslugiQuery);
+		try {
+			while(rs.next()) {
+				
+				uslugiDodatkowe.add(rs.getString(1));
+				cenyUslugDodatkowych.add(rs.getString(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		db.closeConnection();
+	}
+	
+	public void anulujRezerwacje() {
+		
+		db.establishConnection();
+		
+		String usunPobytQuery = "delete from REZERWACJA where nr_rezerwacji = " + nrRezerwacji + ";";
+		String usunPokojQuery = "delete from REZERWACJA_POKOJE where nr_rezerwacji = " + nrRezerwacji + " and nr_pokoju = " + nrPokoju + ";";
+				
+		if(-1 == db.executeUpdate(usunPokojQuery))
+			System.err.println("UsunPokojQuery failed");	
+		
+		if(-1 == db.executeUpdate(usunPobytQuery))
+			System.err.println("UsunPobytQuery failed");		
 	}
 	
 	public void przeksztalcRezerwacjeWPobyt() {
+		
+		//TODO
+		//Znaleźć daty oraniczające daną rezerwację
+		//wywołać dodajPobyt();
+		//wywołać anulujRezerwacje();
+	}
+	
+	public void dodajRezerwacje() {
 		
 		//TODO zaimplementuj
 	}

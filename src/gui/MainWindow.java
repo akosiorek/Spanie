@@ -125,6 +125,7 @@ public class MainWindow {
 		btnStronaDomowa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				widokPanel.wyswietl(WidokPanel.EMPTY);
 				zadaniaPanel.wyswietl(zadaniaPanel.ZWYKLE);
 			}
 		});
@@ -240,6 +241,7 @@ public class MainWindow {
 						JOptionPane.showMessageDialog(new JFrame(), adminErrorMsg, "Brak uprawnień!",
 						        JOptionPane.ERROR_MESSAGE);
 					} else {
+						widokPanel.wyswietl(WidokPanel.EMPTY);
 						zadaniaPanel.wyswietl(zadaniaPanel.RAPORT);	
 					}
 				}

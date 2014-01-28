@@ -43,6 +43,7 @@ public class PobytPanel extends JPanel {
 	private final JLabel lblCena = new JLabel("Cena:");
 	private final JLabel lblCenaPobytu = new JLabel("Cena pobytu:");
 	private final JLabel lblCenaZaPobyt = new JLabel("");
+	private final JLabel lblCenaPokoju = new JLabel("");
 	
 	/**
 	 * Create the panel.
@@ -53,6 +54,9 @@ public class PobytPanel extends JPanel {
 		setLayout(null);
 		btnZakonczPobyt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				parent.zakonczPobyt();
+				parent.hidePanel();
 			}
 		});
 		btnZakonczPobyt.setBounds(137, 53, 125, 27);
@@ -104,6 +108,9 @@ public class PobytPanel extends JPanel {
 		lblCena.setBounds(cenaX, 60, 60, 15);
 		
 		panel.add(lblCena);
+		lblCenaPokoju.setBounds(256, 33, 60, 15);
+		
+		panel.add(lblCenaPokoju);
 		lblCenaPobytu.setBounds(147, 304, 100, 15);
 		
 		add(lblCenaPobytu);
@@ -118,8 +125,7 @@ public class PobytPanel extends JPanel {
 			}
 			public void componentShown(ComponentEvent e) {
 
-				lblImieinazwisko.setText(parent.getImie() + " " + parent.getNazwisko());
-				lblTypPokoju.setText(parent.getTypPokoju() + " nr: " + parent.getNrPokoju() );
+				odswiez();
 			}
 			});
 
@@ -134,24 +140,31 @@ public class PobytPanel extends JPanel {
 		List<String> nazwy = parent.getUslugiDodatkowe();
 		List<String> ceny = parent.getCenyUslugDodatkowych();
 		
-		for(int i = uslugiDodatkowe.size(); i < nazwy.size(); i++) {
+		int index = nazwy.size() - 1;
+		JLabel nazwa = new JLabel(nazwy.get(index));
+		JLabel cena = new JLabel(ceny.get(index));
 			
-			JLabel nazwa = new JLabel(nazwy.get(i));
-			JLabel cena = new JLabel(ceny.get(i));
+		nazwa.setBounds(nazwaX, first + index * interval, width, height); 
+		cena.setBounds(cenaX, first + index * interval, width, height); 
 			
-			nazwa.setBounds(nazwaX, first + i * interval, width, height); 
-			cena.setBounds(cenaX, first + i * interval, width, height); 
-			
-			uslugiDodatkowe.add(nazwa);
-			cenyUslugDodatkowych.add(cena);
-			panel.add(cena);
-			panel.add(nazwa);
-			panel.setPreferredSize(new Dimension(panel.getWidth() - 20, first + i * interval + height));
-//			System.out.println("Added " + nazwa.getText() + " - " + cena.getText());
-		}
+		uslugiDodatkowe.add(nazwa);
+		cenyUslugDodatkowych.add(cena);
+		panel.add(cena);
+		panel.add(nazwa);
+		panel.setPreferredSize(new Dimension(panel.getWidth() - 20, first + index * interval + height));
+		System.out.println("Added " + nazwa.getText() + " - " + cena.getText());
+		
 		lblCenaZaPobyt.setText(parent.getCenaPobytu() + " zł");
 		panel.revalidate();
 		panelScrollPane.revalidate();
 		repaint();
+	}
+	
+	public void odswiez() {
+		
+		lblImieinazwisko.setText(parent.getImie() + " " + parent.getNazwisko());
+		lblTypPokoju.setText(parent.getTypPokoju() + " nr: " + parent.getNrPokoju() );
+		lblCenaZaPobyt.setText(parent.getCenaPobytu() + " zł");
+		lblCenaPokoju.setText(parent.getCenaPokoju() + " zł");
 	}
 }
